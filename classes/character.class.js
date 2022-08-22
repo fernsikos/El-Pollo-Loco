@@ -13,12 +13,20 @@ class Character extends Moveableobject {
     height = 220;
     width = 110;
 
+
     constructor() {
         super();
         this.createImage('img/2_character_pepe/1_idle/idle/I-1.png')
         this.loadImagesToCache(this.IMAGES_WALKING);
+        this.animate();
     }
 
+
+    animate() {
+        setInterval(() => {
+            this.playAnimation(this.IMAGES_WALKING)
+        }, 1000 / 15);
+    }
 
 
     jump() {

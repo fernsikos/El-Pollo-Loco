@@ -4,7 +4,10 @@ class Moveableobject {
     height;
     width;
     img;
-    imageCache = {};
+    imageCount = 0;
+    imageCache = {
+
+    };
 
 
     //img element wird erstellt, aber noch nicht aufs canvas gezeichnet.
@@ -17,8 +20,15 @@ class Moveableobject {
         imageArray.forEach(path => {
             let img = new Image();
             img.src = path;
-            this.imageCache[path] = path;
+            this.imageCache[path] = img;
         });
+    }
+
+    playAnimation(Images) {
+        let i = this.imageCount % Images.length;
+        let imagePath = Images[i];
+        this.img = this.imageCache[imagePath];
+        this.imageCount++
     }
 
     moveRight() {
