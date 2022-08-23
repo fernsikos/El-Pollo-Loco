@@ -4,6 +4,7 @@ class Moveableobject {
     height;
     width;
     img;
+    imageMirrored = false;
     imageCount = 0;
     imageCache = {
 
@@ -31,12 +32,14 @@ class Moveableobject {
         this.imageCount++
     }
 
-    moveRight() {
-
+    moveRight(speed) {
+        this.x += speed;
+        this.imageMirrored = false;
     }
 
     moveLeft(speed) {
         this.x -= speed;
+        this.imageMirrored = true;
     }
 
 

@@ -12,6 +12,8 @@ class Character extends Moveableobject {
     y = 210;
     height = 220;
     width = 110;
+    world;
+    walkingSpeed = 13;
 
 
     constructor() {
@@ -24,7 +26,15 @@ class Character extends Moveableobject {
 
     animate() {
         setInterval(() => {
-            this.playAnimation(this.IMAGES_WALKING)
+            if(this.world.keyboard.RIGHT) {
+            this.playAnimation(this.IMAGES_WALKING);
+            this.moveRight(this.walkingSpeed);
+            };
+
+            if(this.world.keyboard.LEFT) {
+                this.playAnimation(this.IMAGES_WALKING);
+                this.moveLeft(this.walkingSpeed);
+            }
         }, 1000 / 15);
     }
 
