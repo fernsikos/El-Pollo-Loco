@@ -2,22 +2,11 @@ class World {
     ctx;
     canvas;
     character = new Character();
+    endboss = new Endboss();
+    level = level1;
     keyboard;
+    camera_x;
 
-    backgroundObjects = [
-        new Background("img/5_background/layers/air.png", 0, 0),
-        new Background("img/5_background/layers/3_third_layer/1.png", 0, 0),
-        new Background("img/5_background/layers/2_second_layer/1.png", 0, 0),
-        new Background("img/5_background/layers/1_first_layer/1.png", 0, 0),
-    ];
-    clouds = [
-        new Cloud("img/5_background/layers/4_clouds/1.png", 10, 20),
-    ]
-    enemies = [
-        new Chicken(),
-        new Chicken(),
-        new Chicken(),
-    ]
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -30,11 +19,17 @@ class World {
     draw() {
         //cleart das Canvas
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        //ermöglicht es zu laufen. Unserer camera ausschnitt verschiebt sich um carera_x
+        this.ctx.translate(this.camera_x, 0)
         //ab hier objekte ins canvas zeichnen
-        this.drawToCanvasFromArray(this.backgroundObjects);
-        this.drawToCanvasFromArray(this.clouds);
+        this.drawToCanvasFromArray(this.level.backgroundObjects);
+        this.drawToCanvasFromArray(this.level.clouds);
+        this.drawToCanvasFromArray(this.level.bottles);
         this.drawToCanvas(this.character);
-        this.drawToCanvasFromArray(this.enemies);
+        this.drawToCanvasFromArray(this.level.enemies);
+        this.drawToCanvas(this.endboss);
+        //part 2 der funktion zum laufen. setzt den cameraausschnitt wieder auf null
+        this.ctx.translate(-this.camera_x, 0)
 
         //Draw wird immer wieder ausgeführt wenn die funktionen oberhalt fertig geladen sind. Das passiert so oft es die grafikkarte erlaubt 
         let self = this;

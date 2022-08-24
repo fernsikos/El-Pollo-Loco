@@ -11,9 +11,10 @@ class Chicken extends Moveableobject {
     width = 80;
     ckickenSpeed = 0.15+ 0.3 * Math.random();
 
-    constructor() {
+    constructor(x) {
         super();
         this.createImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
+        this.x = x;
         this.loadImagesToCache(this.IMAGES_WALKING);
         this.animate();
     }
