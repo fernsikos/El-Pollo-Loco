@@ -1,6 +1,21 @@
 class Moveableobject extends DrawableObject{
   
     imageMirrored = false;
+    speedY = 0;
+    acceleration = 1;
+
+    applyGravity() {
+        setInterval(() => {
+            if(this.isAboveGround() || this.speedY > 0) {
+            this.y -= this.speedY;
+            this.speedY -= this.acceleration;
+            }
+        }, 1000/25);
+    }
+
+    isAboveGround() {
+        return this.y < 210;
+    }
  
 
     playAnimation(Images) {
@@ -17,7 +32,11 @@ class Moveableobject extends DrawableObject{
 
     moveLeft(speed) {
         this.x -= speed;
-        
+    }
+
+    jump() {
+        this.speedY = 25;
+        console.log("Jump");
     }
 
 
