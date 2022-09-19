@@ -45,18 +45,18 @@ const level1 = new Level(
         new Cloud("img/5_background/layers/4_clouds/1.png", -710, 20),
     ],
     enemies = [
-        new ChickenSmall(400, 375),
+        new ChickenSmall(400),
         new Chicken(450),
         new Chicken(800),
-        new ChickenSmall(1000, 375),
-        // new ChickenSmall(1100, 375),
+        new ChickenSmall(1000),
+        // new ChickenSmall(1100),
         new Chicken(1400),
         new Chicken(1800),
-        new ChickenSmall(1000, 375),
+        new ChickenSmall(1000),
         new Chicken(2400),
         new Chicken(2600),
         new Chicken(2800),
-        new ChickenSmall(3000, 375),
+        new ChickenSmall(3000),
     ],
 
     bottles = [
@@ -69,4 +69,26 @@ const level1 = new Level(
         new Bottle(2300),
         new Bottle(2500),
     ],
+
+    coins = [
+        //Arrow
+        new Coin(520, 333),
+        new Coin(550, 310),
+        new Coin(585, 300),
+        new Coin(620, 310),
+        new Coin(650, 333),
+        //Horizontal
+        new Coin(1000, 355),
+        new Coin(1040, 355),
+        new Coin(1080, 355),
+        new Coin(1120, 355),
+        new Coin(1160, 355),
+        new Coin(1200, 355),
+        //Vertical
+        new Coin(2000, 355),
+        new Coin(2000, 315),
+        new Coin(2000, 275),
+        new Coin(2000, 235),
+        new Coin(2000, 195),
+    ]
 );

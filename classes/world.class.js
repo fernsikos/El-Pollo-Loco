@@ -25,6 +25,7 @@ class World {
         this.drawToCanvasFromArray(this.level.backgroundObjects);
         this.drawToCanvasFromArray(this.level.clouds);
         this.drawToCanvasFromArray(this.level.bottles);
+        this.drawToCanvasFromArray(this.level.coins);
         this.drawToCanvas(this.character);
         this.drawToCanvasFromArray(this.level.enemies);
         this.drawToCanvas(this.endboss);

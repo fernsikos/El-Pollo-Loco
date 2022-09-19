@@ -6,9 +6,9 @@ class Chicken extends Moveableobject {
     ]
 
     x = 250 + Math.random() * 500;
-    y = 350;
-    height = 80;
-    width = 80;
+    y = 370;
+    height = 60;
+    width = 60;
     ckickenSpeed = 0.15+ 0.3 * Math.random();
 
     constructor(x) {
