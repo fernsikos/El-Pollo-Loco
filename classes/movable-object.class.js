@@ -1,6 +1,7 @@
 class Moveableobject extends DrawableObject{
   
     imageMirrored = false;
+    energy = 100;
     speedY = 0;
     acceleration = 1;
     lastMove = new Date().getTime();
@@ -16,18 +17,6 @@ class Moveableobject extends DrawableObject{
 
     isAboveGround() {
         return this.y < 210;
-    }
- 
-    isResting() {
-        let timePassedSinceLAstMove = new Date().getTime() - this.lastMove;
-        timePassedSinceLAstMove = timePassedSinceLAstMove / 1000;
-        return timePassedSinceLAstMove > 0.1 && timePassedSinceLAstMove < 5;
-    }
-
-    isSleepimg() {
-        let timePassedSinceLAstMove = new Date().getTime() - this.lastMove;
-        timePassedSinceLAstMove = timePassedSinceLAstMove / 1000;
-        return timePassedSinceLAstMove > 5;
     }
 
     playAnimation(Images) {
