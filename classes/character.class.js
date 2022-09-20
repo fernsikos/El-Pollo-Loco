@@ -134,10 +134,7 @@ class Character extends Moveableobject {
         } 
     }
 
-    collectedCoin(coin, indexCoins) {
-       
-        // this.world.coinbar.updateCoins();
-    }
+   
 
     isResting() {
         let timePassedSinceLAstMove = new Date().getTime() - this.lastMove;

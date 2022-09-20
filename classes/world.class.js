@@ -4,6 +4,7 @@ class World {
     statusbar = new Statusbar();
     coinbar = new Coinbar();
     character = new Character();
+    bottlebar = new Bottlebar();
     endboss = new Endboss();
     level = level1;
     keyboard;
@@ -36,6 +37,7 @@ class World {
         this.ctx.translate(-this.camera_x, 0)
         this.drawToCanvas(this.statusbar);
         this.drawToCanvas(this.coinbar);
+        this.drawToCanvas(this.bottlebar);
         //Draw wird immer wieder ausgeführt wenn die funktionen oberhalt fertig geladen sind. Das passiert so oft es die grafikkarte erlaubt 
         let self = this;
         requestAnimationFrame(function () {
@@ -45,24 +47,12 @@ class World {
 
     checkCollisionInterval() {
         setInterval(() => {
-            let indexCoins = 0;
-            // if(this.character.isColliding(this.endboss)) {
-            //     this.character.hit();
-            // }
-            this.level.coins.forEach(coin => {
-                if(this.character.isColliding(coin)) {
-                    this.character.collectedCoin(coin, indexCoins);
-                    this.level1.coins.splice(indexCoins, 1)
-                }
-                indexCoins++;
-                console.log(indexCoins)
-            });
-
-            this.level.enemies.forEach(enemy => {
-                if(this.character.isColliding(enemy)) {
-                    this.character.hit();
-                }
-            });
+            if(this.character.isColliding(this.endboss)) {
+                this.character.hit();
+            }
+            this.checkBottles();
+            this.checkCoins();
+            this.checkEnemies();
         }, 400);
     }
 
@@ -93,5 +83,33 @@ class World {
     restoreImage(object) {
         this.ctx.restore();
         object.x = object.x * -1;
+    }
+
+    checkEnemies() {
+        this.level.enemies.forEach(enemy => {
+            if (this.character.isColliding(enemy)) {
+                this.character.hit();
+            }
+        });
+    }
+
+    checkCoins() {
+        this.level.coins.forEach(coin => {
+            if(this.character.isColliding(coin)) {
+                let coinPosition = this.level.coins.indexOf(coin);
+                this.level.coins.splice(coinPosition, 1)
+                this.coinbar.updateCoins();
+            }
+        });
+    }
+
+    checkBottles() {
+        this.level.bottles.forEach(bottle => {
+            if(this.character.isColliding(bottle)) {
+                let bottlePosition = this.level.bottles.indexOf(bottle);
+                this.level.bottles.splice(bottlePosition, 1);
+                this.bottlebar.updateBottles();
+            }
+        });
     }
 }
