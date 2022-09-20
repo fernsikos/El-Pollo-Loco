@@ -5,7 +5,7 @@ class World {
     coinbar = new Coinbar();
     character = new Character();
     bottlebar = new Bottlebar();
-    endboss = new Endboss();
+    // endboss = new Endboss();
     level = level1;
     keyboard;
     camera_x;
@@ -16,7 +16,7 @@ class World {
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.draw();
-        this.character.world = this;
+        this.character.world = this; 
         this.checkCollisionInterval();
     }
 
@@ -32,7 +32,8 @@ class World {
         this.drawToCanvasFromArray(this.level.coins);
         this.drawToCanvas(this.character);
         this.drawToCanvasFromArray(this.level.enemies);
-        this.drawToCanvas(this.endboss);
+        // this.drawToCanvas(this.endboss);
+        this.drawToCanvasFromArray(this.level.endboss); //new
         //part 2 der funktion zum laufen. setzt den cameraausschnitt wieder auf null
         this.ctx.translate(-this.camera_x, 0)
         this.drawToCanvas(this.statusbar);
@@ -47,9 +48,7 @@ class World {
 
     checkCollisionInterval() {
         setInterval(() => {
-            if(this.character.isColliding(this.endboss)) {
-                this.character.hit();
-            }
+            this.checkEndboss();
             this.checkBottles();
             this.checkCoins();
             this.checkEnemies();
@@ -109,6 +108,14 @@ class World {
                 let bottlePosition = this.level.bottles.indexOf(bottle);
                 this.level.bottles.splice(bottlePosition, 1);
                 this.bottlebar.updateBottles();
+            }
+        });
+    }
+
+    checkEndboss() {
+        this.level.endboss.forEach(boss => {
+            if(this.character.isColliding(boss)) {
+                this.character.hit();
             }
         });
     }
