@@ -54,6 +54,12 @@ class Character extends Moveableobject {
         'img/2_character_pepe/5_dead/D-55.png',
         'img/2_character_pepe/5_dead/D-56.png',
         'img/2_character_pepe/5_dead/D-57.png',
+    ];
+
+    IMAGES_HURT = [
+        "img/2_character_pepe/4_hurt/H-41.png",
+        "img/2_character_pepe/4_hurt/H-42.png",
+        "img/2_character_pepe/4_hurt/H-43.png",
     ]
 
     x = 100;
@@ -75,6 +81,7 @@ class Character extends Moveableobject {
         this.loadImagesToCache(this.IMAGES_RESTING);
         this.loadImagesToCache(this.IMAGES_SLEEPING);
         this.loadImagesToCache(this.IMAGES_DEAD);
+        this.loadImagesToCache(this.IMAGES_HURT);
         this.walking_sound.volume = 0.7;
         this.animate();
         this.applyGravity();
@@ -102,8 +109,10 @@ class Character extends Moveableobject {
         }, 1000 / 15);
 
         setInterval(() => {
-            if (this.energy === 0 || this.hitAnimation === true) {
+            if (this.energy === 0) {
                 this.playAnimation(this.IMAGES_DEAD);
+            } else if (this.hitAnimation === true) {
+                this.playAnimation(this.IMAGES_HURT);
                 this.hitAnimation = false;
             } else if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_JUMPING);
@@ -120,8 +129,8 @@ class Character extends Moveableobject {
     isColliding(mo) {
         return this.x + this.width > mo.x &&
             this.y + this.height > mo.y &&
-            this.x < mo.x &&
-            this.y < mo.y
+            this.x < mo.x + mo.width &&
+            this.y < mo.y + mo.height
     }
 
     hit() {
@@ -131,10 +140,8 @@ class Character extends Moveableobject {
         this.lastHit = new Date().getTime();
         if (this.energy < 0) {
             this.energy = 0
-        } 
+        }
     }
-
-   
 
     isResting() {
         let timePassedSinceLAstMove = new Date().getTime() - this.lastMove;

@@ -92,9 +92,5 @@ const level1 = new Level(
         new Coin(2000, 275),
         new Coin(2000, 235),
         new Coin(2000, 195),
-    ],
-
-    endboss = [
-        new Endboss(3200) //New
     ]
 );

@@ -16,7 +16,11 @@ class Moveableobject extends DrawableObject{
     }
 
     isAboveGround() {
-        return this.y < 210;
+        if(this instanceof Throwablebottle) {
+            return this.y < 360;
+        } else {
+            return this.y < 210;
+        }
     }
 
     playAnimation(Images) {

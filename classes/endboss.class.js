@@ -28,7 +28,6 @@ class Endboss extends Moveableobject {
 
     constructor(x) {
         super();
-        this.x = x;
         this.loadImagesToCache(this.IMAGES_ALERT);
         this.loadImagesToCache(this.IMAGES_WALKING);
         this.createImage("img/4_enemie_boss_chicken/2_alert/G5.png");
@@ -53,9 +52,9 @@ class Endboss extends Moveableobject {
     }
 
     checkIfCharacterAtEndboss() {
-        // if (world.character.x > world.level.endboss.x - 400) {
-        //     this.characterAriivedAtEndboss = true;
-        // }
+        if (world.character.x > world.endboss.x - 400) {
+            this.characterAriivedAtEndboss = true;
+        }
     }
 
     playSound() {

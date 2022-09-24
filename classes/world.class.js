@@ -5,8 +5,9 @@ class World {
     coinbar = new Coinbar();
     character = new Character();
     bottlebar = new Bottlebar();
-    // endboss = new Endboss();
+    endboss = new Endboss();
     level = level1;
+    throwableBottles = [];
     keyboard;
     camera_x;
 
@@ -16,8 +17,8 @@ class World {
         this.canvas = canvas;
         this.keyboard = keyboard;
         this.draw();
-        this.character.world = this; 
-        this.checkCollisionInterval();
+        this.character.world = this;
+        this.runInterval();
     }
 
     draw() {
@@ -29,11 +30,12 @@ class World {
         this.drawToCanvasFromArray(this.level.backgroundObjects);
         this.drawToCanvasFromArray(this.level.clouds);
         this.drawToCanvasFromArray(this.level.bottles);
+        this.drawToCanvasFromArray(this.throwableBottles);
         this.drawToCanvasFromArray(this.level.coins);
         this.drawToCanvas(this.character);
         this.drawToCanvasFromArray(this.level.enemies);
-        // this.drawToCanvas(this.endboss);
-        this.drawToCanvasFromArray(this.level.endboss); //new
+        this.drawToCanvas(this.endboss);
+        // this.drawToCanvasFromArray(this.level.endboss); //new
         //part 2 der funktion zum laufen. setzt den cameraausschnitt wieder auf null
         this.ctx.translate(-this.camera_x, 0)
         this.drawToCanvas(this.statusbar);
@@ -46,13 +48,24 @@ class World {
         });
     }
 
-    checkCollisionInterval() {
+    runInterval() {
         setInterval(() => {
-            this.checkEndboss();
-            this.checkBottles();
-            this.checkCoins();
-            this.checkEnemies();
+            this.checkCollisions();
+            this.checkThrowableBottles();
         }, 400);
+    }
+
+    checkCollisions() {
+        this.checkEndboss();
+        this.checkBottles();
+        this.checkCoins();
+        this.checkEnemies();
+    }
+
+    checkThrowableBottles() {
+        if(this.keyboard.D) {
+            this.throwableBottles.push(new Throwablebottle(this.character.x + 50, this.character.y +100))
+        }
     }
 
     drawToCanvas(object) {
@@ -94,7 +107,7 @@ class World {
 
     checkCoins() {
         this.level.coins.forEach(coin => {
-            if(this.character.isColliding(coin)) {
+            if (this.character.isColliding(coin)) {
                 let coinPosition = this.level.coins.indexOf(coin);
                 this.level.coins.splice(coinPosition, 1)
                 this.coinbar.updateCoins();
@@ -104,7 +117,7 @@ class World {
 
     checkBottles() {
         this.level.bottles.forEach(bottle => {
-            if(this.character.isColliding(bottle)) {
+            if (this.character.isColliding(bottle)) {
                 let bottlePosition = this.level.bottles.indexOf(bottle);
                 this.level.bottles.splice(bottlePosition, 1);
                 this.bottlebar.updateBottles();
@@ -113,10 +126,8 @@ class World {
     }
 
     checkEndboss() {
-        this.level.endboss.forEach(boss => {
-            if(this.character.isColliding(boss)) {
-                this.character.hit();
-            }
-        });
+        if (this.character.isColliding(this.endboss)) {
+            this.character.hit();
+        }
     }
 }
