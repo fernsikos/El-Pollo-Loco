@@ -26,25 +26,33 @@ function fullscreen() {
 
 /* View in fullscreen */
 function openFullscreen(elem) {
+    document.getElementById('canvas').classList.add('canvasFullscreen')
     if (elem.requestFullscreen) {
-      elem.requestFullscreen();
+        elem.requestFullscreen();
     } else if (elem.webkitRequestFullscreen) { /* Safari */
-      elem.webkitRequestFullscreen();
+        elem.webkitRequestFullscreen();
     } else if (elem.msRequestFullscreen) { /* IE11 */
-      elem.msRequestFullscreen();
+        elem.msRequestFullscreen();
     }
-  }
-  
-  /* Close fullscreen */
-  function closeFullscreen() {
+}
+
+/* Close fullscreen */
+function closeFullscreen() {
     if (document.exitFullscreen) {
-      document.exitFullscreen();
+        document.exitFullscreen();
+        restoreCanvasSize();
     } else if (document.webkitExitFullscreen) { /* Safari */
-      document.webkitExitFullscreen();
+        document.webkitExitFullscreen();
+        restoreCanvasSize();
     } else if (document.msExitFullscreen) { /* IE11 */
-      document.msExitFullscreen();
+        document.msExitFullscreen();
+        restoreCanvasSize();
     }
-  }
+}
+
+function restoreCanvasSize() {
+    document.getElementById('canvas').classList.remove('canvasFullscreen')
+}
 
 window.addEventListener('keydown', (event) => {
     if (event.keyCode == 37) {
