@@ -20,6 +20,7 @@ class Throwablebottle extends Moveableobject {
     x = 150;
     y = 330;
     speedX = 3;
+    
 
     constructor(x, y) {
         super();
@@ -28,16 +29,59 @@ class Throwablebottle extends Moveableobject {
         this.createImage("img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png");
         this.applyGravity();
         this.throw(x, y);
+        this.animate();
     }
+
+    // animate() {
+    //     let bottleCollided = false;
+    //     setInterval(() => {
+    //         if (this.isAboveGround()) {
+    //             this.playAnimation(this.IMAGES_BOTTLEANIMATION)
+    //         } else if (!bottleCollided) {
+    //             bottleCollided = true;
+    //             this.playAnimation(this.IMAGES_BOTTLESPLASH);
+               
+    //         }
+    //     }, 80);
+        
+    // }
+
+    animate() {
+        let timeoutSet = false;
+
+        let interval = setInterval(() => {
+            if (this.isAboveGround()) {
+                this.playAnimation(this.IMAGES_BOTTLEANIMATION);
+            } else {
+                if (!timeoutSet) {
+                    timeoutSet = true;
+                    // this.shatterSound.play(); noch sound hinzufügen
+                    
+
+                    setTimeout(() => {
+                        clearInterval(interval);
+                        let index = world.throwableBottles.indexOf(this); 
+                        world.throwableBottles.splice(index, 1);
+                    }, 400);
+                }
+
+                this.playAnimation(this.IMAGES_BOTTLESPLASH);
+            }
+        }, 100);
+    }
+
+
+    
 
     throw(x,y) {
         this.x = x;
         this.y = y;
         this.speedY = 20;
-        if ( this.y > 360) {
             setInterval(() => {
-                this.x += this.speedX;
+                if (this.y < 350) {
+                    this.x += this.speedX;
+                } 
             }, 1000/60);
-        }
+        
     }
 }

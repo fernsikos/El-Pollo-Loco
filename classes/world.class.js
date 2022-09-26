@@ -10,6 +10,7 @@ class World {
     throwableBottles = [];
     keyboard;
     camera_x;
+    keyboardPressed = false;
 
 
     constructor(canvas, keyboard) {
@@ -52,7 +53,7 @@ class World {
         setInterval(() => {
             this.checkCollisions();
             this.checkThrowableBottles();
-        }, 400);
+        }, 100);
     }
 
     checkCollisions() {
@@ -63,8 +64,11 @@ class World {
     }
 
     checkThrowableBottles() {
-        if(this.keyboard.D) {
+        if(this.keyboard.D && !this.keyboardPressed) {
+            this.keyboardPressed = true;
             this.throwableBottles.push(new Throwablebottle(this.character.x + 50, this.character.y +100))
+        } else if (!this.keyboard.D) {
+            this.keyboardPressed = false
         }
     }
 
@@ -103,6 +107,7 @@ class World {
                 this.character.hit();
             } else if (this.character.isColliding(enemy) && this.character.speedY < 0 && !enemy.isHit) {
                 this.killEnemy(enemy);
+                this.character.jump();
             }
         });
     }
@@ -110,6 +115,14 @@ class World {
     killEnemy(enemy) {
         enemy.isHit = true;
         enemy.isAlive = false;
+        enemy.img = enemy.imageDead;
+        setTimeout(this.removeDeadEnemies, 2000, this)
+    }
+
+    removeDeadEnemies(world) {
+        if(world.level.enemies) {
+            world.level.enemies = world.level.enemies.filter((e) => e.isAlive)
+        }
     }
 
     checkCoins() {

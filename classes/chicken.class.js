@@ -10,12 +10,14 @@ class Chicken extends Moveableobject {
     height = 60;
     width = 60;
     ckickenSpeed = 0.15+ 0.3 * Math.random();
+    imageDead = new Image();
 
     constructor(x) {
         super();
         this.createImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
         this.x = x;
         this.loadImagesToCache(this.IMAGES_WALKING);
+        this.imageDead.src = "img/3_enemies_chicken/chicken_normal/2_dead/dead.png";
         this.animate();
     }
 
