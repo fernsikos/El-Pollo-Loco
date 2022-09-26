@@ -21,11 +21,15 @@ class Chicken extends Moveableobject {
 
      animate() {
         setInterval(() => {
-            this.moveLeft(this.ckickenSpeed)
+            if (!this.isHit) {
+                this.moveLeft(this.ckickenSpeed)
+            }
         }, 1000/60);
 
         setInterval(() => {
-            this.playAnimation(this.IMAGES_WALKING)
+            if (!this.isHit) {
+                this.playAnimation(this.IMAGES_WALKING)
+            }
         }, 1000/7);
      }
   

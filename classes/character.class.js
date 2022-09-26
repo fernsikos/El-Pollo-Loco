@@ -66,7 +66,6 @@ class Character extends Moveableobject {
     y = 80; //210
     height = 220;
     width = 110;
-    hitAnimation = false;
     world;
     walkingSpeed = 20;
     walking_sound = new Audio('audio/walking_modified.mp3');
@@ -111,9 +110,8 @@ class Character extends Moveableobject {
         setInterval(() => {
             if (this.energy === 0) {
                 this.playAnimation(this.IMAGES_DEAD);
-            } else if (this.hitAnimation === true) {
+            } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
-                this.hitAnimation = false;
             } else if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_JUMPING);
             } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
@@ -136,7 +134,6 @@ class Character extends Moveableobject {
     hit() {
         this.energy -= 5;
         this.world.statusbar.syncronizeStatusbar(this.energy);
-        this.hitAnimation = true;
         this.lastHit = new Date().getTime();
         if (this.energy < 0) {
             this.energy = 0
@@ -155,4 +152,9 @@ class Character extends Moveableobject {
         return timePassedSinceLAstMove > 5;
     }
 
+    isHurt() {
+        let timePassed = new Date().getTime() - this.lastHit;
+        timePassed = timePassed / 1000;
+        return timePassed < 0.5;
+    }
 }

@@ -34,7 +34,7 @@ class Throwablebottle extends Moveableobject {
         this.x = x;
         this.y = y;
         this.speedY = 20;
-        if ( this.isAboveGround()) {
+        if ( this.y > 360) {
             setInterval(() => {
                 this.x += this.speedX;
             }, 1000/60);

@@ -99,10 +99,17 @@ class World {
 
     checkEnemies() {
         this.level.enemies.forEach(enemy => {
-            if (this.character.isColliding(enemy)) {
+            if (this.character.isColliding(enemy) && this.character.speedY > -0.1 && enemy.isAlive) {
                 this.character.hit();
+            } else if (this.character.isColliding(enemy) && this.character.speedY < 0 && !enemy.isHit) {
+                this.killEnemy(enemy);
             }
         });
+    }
+
+    killEnemy(enemy) {
+        enemy.isHit = true;
+        enemy.isAlive = false;
     }
 
     checkCoins() {
