@@ -68,6 +68,7 @@ class Character extends Moveableobject {
     width = 110;
     world;
     walkingSpeed = 20;
+    facingLeft = false;
     walking_sound = new Audio('audio/walking_modified.mp3');
 
 
@@ -95,11 +96,13 @@ class Character extends Moveableobject {
             }
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end) {
                 this.moveRight(this.walkingSpeed);
+                this.facingLeft = false;
                 if (!this.isAboveGround()) { this.walking_sound.play() };
             };
 
             if (this.world.keyboard.LEFT && this.x > this.world.level.level_start) {
                 this.imageMirrored = true;
+                this.facingLeft = true;
                 this.moveLeft(this.walkingSpeed);
                 if (!this.isAboveGround()) { this.walking_sound.play() };
             }
@@ -124,12 +127,12 @@ class Character extends Moveableobject {
         }, 1000 / 10);
     }
 
-    isColliding(mo) {
-        return this.x + this.width > mo.x &&
-            this.y + this.height > mo.y &&
-            this.x < mo.x + mo.width &&
-            this.y < mo.y + mo.height
-    }
+    // isColliding(mo) {
+    //     return this.x + this.width > mo.x &&
+    //         this.y + this.height > mo.y &&
+    //         this.x < mo.x + mo.width &&
+    //         this.y < mo.y + mo.height
+    // }
 
     hit() {
         this.energy -= 5;

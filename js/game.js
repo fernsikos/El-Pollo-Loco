@@ -6,7 +6,18 @@ let keyboard = new Keyboard();
 function init() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
+    // document.getElementById('intro-screen').classList.add('d-none');
 }
+
+// function introAnimation() {
+//     document.getElementById('intro-text').style = "transform: scale(1.2)";
+//     setTimeout(() => {
+//         document.getElementById('intro-text').style = "transform: scale(1.0)";
+//     }, 1000);
+//     setTimeout(() => {
+//         introAnimation()
+//     }, 2000);
+// }
 
 window.addEventListener('keydown', (event) => {
     if (event.keyCode == 37) {

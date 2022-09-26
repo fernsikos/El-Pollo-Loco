@@ -61,12 +61,40 @@ class World {
         this.checkBottles();
         this.checkCoins();
         this.checkEnemies();
+        this.checkBottleHitsEnemies();
+        this.checkBottleHitEndboss();
+    }
+
+    checkBottleHitEndboss() {
+        this.throwableBottles.forEach(bottle => {
+            if (bottle.isColliding(this.endboss) && !this.endboss.hit) {
+                this.endboss.endbossHit();
+                this.endboss.hit = true;
+                setTimeout(() => {
+                    this.endboss.hit = false;
+                }, 1000);
+            }
+        });
+    }
+
+    checkBottleHitsEnemies() {
+        if (this.throwableBottles) {
+            this.throwableBottles.forEach(bottle => {
+                this.level.enemies.forEach(enemy => {
+                    if (bottle.isColliding(enemy) && !enemy.isHit) {
+                        this.killEnemy(enemy);
+                    }
+                });
+            });
+        }
     }
 
     checkThrowableBottles() {
-        if(this.keyboard.D && !this.keyboardPressed) {
+        if(this.keyboard.D && !this.keyboardPressed && this.bottlebar.bottles > 0) {
             this.keyboardPressed = true;
-            this.throwableBottles.push(new Throwablebottle(this.character.x + 50, this.character.y +100))
+            this.throwableBottles.push(new Throwablebottle(this.character.x + 50, this.character.y +100, this));
+            this.bottlebar.bottles --;
+            this.bottlebar.updateBottlebar();
         } else if (!this.keyboard.D) {
             this.keyboardPressed = false
         }
@@ -77,7 +105,7 @@ class World {
             this.flipImage(object);
         };
         object.draw(this.ctx);
-        object.drawRectangles(this.ctx);
+        // object.drawRectangles(this.ctx);
         if (object.imageMirrored) {
             this.restoreImage(object);
         }
