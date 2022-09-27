@@ -27,7 +27,18 @@ canvas {
     height: 100vh; */
 }
 
-img {
+#intro-screen {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 720px;
+    height: 480px;
+    cursor: pointer;
+}  
+
+#outro-screen {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -53,7 +64,11 @@ span {
         width: 100vw;
     }
 
-    img {
+    #intro-screen {
+        width: 100vw;
+    }
+
+    #outro-screen {
         width: 100vw;
     }
 }
@@ -74,9 +89,13 @@ span {
         height: 100%;
     }
 
-    img {
+    #intro-screen {
         height: 100vh;
-    }
+    }  
+
+    #outro-screen {
+        height: 100vh;
+    }  
 
     body {
         justify-content: unset;

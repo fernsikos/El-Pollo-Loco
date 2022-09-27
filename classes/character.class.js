@@ -63,7 +63,7 @@ class Character extends Moveableobject {
     ]
 
     x = 100;
-    y = 80; //210
+    y = 210;
     height = 220;
     width = 110;
     world;
@@ -89,7 +89,7 @@ class Character extends Moveableobject {
 
 
     animate() {
-        setInterval(() => {
+        let intervall = setInterval(() => {
             this.walking_sound.pause();
             if (this.world.keyboard.SPACE && !this.isAboveGround()) {
                 this.jump();
@@ -127,19 +127,21 @@ class Character extends Moveableobject {
         }, 1000 / 10);
     }
 
-    // isColliding(mo) {
-    //     return this.x + this.width > mo.x &&
-    //         this.y + this.height > mo.y &&
-    //         this.x < mo.x + mo.width &&
-    //         this.y < mo.y + mo.height
-    // }
-
     hit() {
-        this.energy -= 5;
+        this.energy -= 10;
         this.world.statusbar.syncronizeStatusbar(this.energy);
         this.lastHit = new Date().getTime();
+        this.isHit = true;
+        setTimeout(() => {
+           this.isHit = false 
+        }, 1000);
+        if (this.energy < 1) {
+            this.isAlive = false;
+            this.world.gameOver = true;
+        }
         if (this.energy < 0) {
             this.energy = 0
+            
         }
     }
 

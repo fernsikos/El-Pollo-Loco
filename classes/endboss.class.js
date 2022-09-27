@@ -87,7 +87,7 @@ class Endboss extends Moveableobject {
     playSound() {
 
         setInterval(() => {
-            if (this.characterAriivedAtEndboss) {
+            if (this.characterAriivedAtEndboss && this.energy > 0) {
                 this.endboss_sound.play()
             }
         }, 15000)

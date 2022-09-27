@@ -11,6 +11,7 @@ class World {
     keyboard;
     camera_x;
     keyboardPressed = false;
+    gameOver = false;
 
 
     constructor(canvas, keyboard) {
@@ -53,6 +54,7 @@ class World {
         setInterval(() => {
             this.checkCollisions();
             this.checkThrowableBottles();
+            this.checkForGameOver();
         }, 100);
     }
 
@@ -63,6 +65,12 @@ class World {
         this.checkEnemies();
         this.checkBottleHitsEnemies();
         this.checkBottleHitEndboss();
+    }
+
+    checkForGameOver() {
+        if (this.gameOver) {
+            document.getElementById('outro-screen').classList.remove('d-none')
+        }
     }
 
     checkBottleHitEndboss() {
@@ -95,6 +103,7 @@ class World {
             this.throwableBottles.push(new Throwablebottle(this.character.x + 50, this.character.y +100, this));
             this.bottlebar.bottles --;
             this.bottlebar.updateBottlebar();
+            this.character.lastMove = new Date().getTime();
         } else if (!this.keyboard.D) {
             this.keyboardPressed = false
         }
@@ -131,7 +140,7 @@ class World {
 
     checkEnemies() {
         this.level.enemies.forEach(enemy => {
-            if (this.character.isColliding(enemy) && this.character.speedY > -0.1 && enemy.isAlive) {
+            if (this.character.isColliding(enemy) && this.character.speedY > -0.1 && enemy.isAlive && !this.character.isHit) {
                 this.character.hit();
             } else if (this.character.isColliding(enemy) && this.character.speedY < 0 && !enemy.isHit) {
                 this.killEnemy(enemy);

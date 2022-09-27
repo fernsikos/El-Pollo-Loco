@@ -8,6 +8,8 @@ function init() {
     initLevel();
     world = new World(canvas, keyboard);
     document.getElementById('intro-screen').classList.add('d-none');
+    document.getElementById('intro-text').classList.add('d-none');
+    document.getElementById('outro-screen').classList.add('d-none');
 }
 
 function introAnimation() {

@@ -5,7 +5,7 @@ class Moveableobject extends DrawableObject{
     speedY = 0;
     acceleration = 1;
     lastMove = new Date().getTime();
-    lastHit = 0;
+    lastHit = 0; //weg?
     isAlive = true;
     isHit = false;
 
