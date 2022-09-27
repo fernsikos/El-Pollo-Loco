@@ -127,7 +127,8 @@ class Character extends Moveableobject {
             }
         }, 1000 / 10);
         
-        // this.world.intervalIds.push(interval);
+        intervalIds.push(interval);
+        intervalIds.push(interval2);
         
 
     }

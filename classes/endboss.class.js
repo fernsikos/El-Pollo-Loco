@@ -53,7 +53,7 @@ class Endboss extends Moveableobject {
 
     animate() {
         let i = 0;
-        setInterval(() => {
+        let interval = setInterval(() => {
             this.checkIfCharacterAtEndboss();
             if (this.characterAriivedAtEndboss) {
                 i++;
@@ -70,6 +70,7 @@ class Endboss extends Moveableobject {
                 this.moveLeft(5)
             }
         }, 200);
+        intervalIds.push(interval);
     }
 
     checkIfCharacterAtEndboss() {

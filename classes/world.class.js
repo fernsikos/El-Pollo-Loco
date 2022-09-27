@@ -12,9 +12,8 @@ class World {
     camera_x;
     keyboardPressed = false;
     gameOver = false;
-    intervalIds = [];
     coin_sound = new Audio('audio/bling.mov');
-   
+
 
 
     constructor(canvas, keyboard) {
@@ -58,11 +57,12 @@ class World {
      * runs the game logic. checks collisions, if bottles are collected and if the game is over
      */
     runInterval() {
-        setInterval(() => {
+        let interval = setInterval(() => {
             this.checkCollisions();
             this.checkThrowableBottles();
             this.checkForGameOver();
         }, 100);
+        intervalIds.push(interval);
     }
 
     /**
@@ -82,10 +82,16 @@ class World {
      */
     checkForGameOver() {
         if (this.gameOver) {
+            this.clearIntervals()
             document.getElementById('outro-screen').classList.remove('d-none')
         }
     }
 
+    clearIntervals() {
+        intervalIds.forEach(id => {
+            clearInterval(id)
+        });
+    }
 
     /**
      * iterates through the array with the throwed bottles. Checkes if bottle 
@@ -123,9 +129,9 @@ class World {
      * If the first check was false, it checkes if the d key ist still pressed. If false, resets d pressed variable.
      */
     checkThrowableBottles() {
-        if(this.keyboard.D && !this.keyboardPressed && this.bottlebar.bottles > 0) {
+        if (this.keyboard.D && !this.keyboardPressed && this.bottlebar.bottles > 0) {
             this.keyboardPressed = true;
-            this.throwableBottles.push(new Throwablebottle(this.character.x + 50, this.character.y +100, this));
+            this.throwableBottles.push(new Throwablebottle(this.character.x + 50, this.character.y + 100, this));
             this.bottlebar.removeBottle();
             this.bottlebar.updateBottlebar();
             this.updateCharactersLastMove();
@@ -134,10 +140,19 @@ class World {
         }
     }
 
+    /**
+     * updates the time from the characters last move 
+     */
     updateCharactersLastMove() {
         this.character.lastMove = new Date().getTime();
     }
 
+
+    /**
+     * Checks if the object needs to be drawn flipped. Draws a single object to the canvas.
+     * Restore the flipped mehod if drawn image was flipped
+     * @param {Object} object 
+     */
     drawToCanvas(object) {
         if (object.imageMirrored) {
             this.flipImage(object);
@@ -149,12 +164,20 @@ class World {
         }
     }
 
+    /**
+     * Iterates through an array with objects and runs drwaToCanvas function
+     * @param {Array} array 
+     */
     drawToCanvasFromArray(array) {
         array.forEach(element => {
             this.drawToCanvas(element)
         });
     }
 
+    /**
+     * Saves canvas configuratin, translate the x axis, mirrores the picture, and adjusts the x axis from object.
+     * @param {Object} object 
+     */
     flipImage(object) {
         this.ctx.save();
         this.ctx.translate(object.width, 0);
@@ -162,11 +185,18 @@ class World {
         object.x = object.x * -1;
     }
 
+    /**
+     * Restores the saved canvas configuration
+     * @param {Object} object 
+     */
     restoreImage(object) {
         this.ctx.restore();
         object.x = object.x * -1;
     }
 
+    /**
+     * 
+     */
     checkEnemies() {
         this.level.enemies.forEach(enemy => {
             if (this.character.isColliding(enemy) && this.character.speedY > -0.1 && enemy.isAlive && !this.character.isHit) {
@@ -186,7 +216,7 @@ class World {
     }
 
     removeDeadEnemies(world) {
-        if(world.level.enemies) {
+        if (world.level.enemies) {
             world.level.enemies = world.level.enemies.filter((e) => e.isAlive)
         }
     }

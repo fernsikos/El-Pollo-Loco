@@ -23,16 +23,18 @@ class ChickenSmall extends Moveableobject {
     }
 
     animate() {
-        setInterval(() => {
+        let interval = setInterval(() => {
             if (!this.isHit) {
                 this.moveLeft(this.ckickenSpeed)
             }
         }, 1000/60);
 
-        setInterval(() => {
+        let interval2 = setInterval(() => {
             if (!this.isHit) {
                 this.playAnimation(this.IMAGES_WALKING)
             }
         }, 1000/7);
+        intervalIds.push(interval);
+        intervalIds.push(interval2);
      }
 }
