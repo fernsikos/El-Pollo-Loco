@@ -20,6 +20,7 @@ class Throwablebottle extends Moveableobject {
     x = 150;
     y = 330;
     speedX = 3;
+    shatter_sound = new Audio('audio/glas-shatter.mp3');
     
 
     constructor(x, y, world) {
@@ -30,6 +31,7 @@ class Throwablebottle extends Moveableobject {
         this.applyGravity();
         this.throw(x, y, world);
         this.animate();
+        this.shatter_sound.volume = 0.4;
     }
 
     animate() {
@@ -52,12 +54,10 @@ class Throwablebottle extends Moveableobject {
                 }
 
                 this.playAnimation(this.IMAGES_BOTTLESPLASH);
+                this.shatter_sound.play();
             }
         }, 100);
     }
-
-
-    
 
     throw(x,y, world) {
         if (!world.character.facingLeft) {

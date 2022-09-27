@@ -70,10 +70,11 @@ class Character extends Moveableobject {
     walkingSpeed = 20;
     facingLeft = false;
     walking_sound = new Audio('audio/walking_modified.mp3');
+    
 
 
 
-    constructor() {
+    constructor(world) {
         super();
         this.createImage('img/2_character_pepe/1_idle/idle/I-1.png')
         this.loadImagesToCache(this.IMAGES_WALKING);
@@ -82,14 +83,14 @@ class Character extends Moveableobject {
         this.loadImagesToCache(this.IMAGES_SLEEPING);
         this.loadImagesToCache(this.IMAGES_DEAD);
         this.loadImagesToCache(this.IMAGES_HURT);
-        this.walking_sound.volume = 0.7;
+        // this.walking_sound.volume = 0.7;
         this.animate();
         this.applyGravity();
     }
 
 
     animate() {
-        let intervall = setInterval(() => {
+        let interval = setInterval(() => {
             this.walking_sound.pause();
             if (this.world.keyboard.SPACE && !this.isAboveGround()) {
                 this.jump();
@@ -110,7 +111,7 @@ class Character extends Moveableobject {
 
         }, 1000 / 15);
 
-        setInterval(() => {
+        let interval2 = setInterval(() => {
             if (this.energy === 0) {
                 this.playAnimation(this.IMAGES_DEAD);
             } else if (this.isHurt()) {
@@ -125,12 +126,14 @@ class Character extends Moveableobject {
                 this.playAnimation(this.IMAGES_RESTING)
             }
         }, 1000 / 10);
+        
     }
 
     hit() {
-        this.energy -= 10;
+        this.energy -= 20;
         this.world.statusbar.syncronizeStatusbar(this.energy);
         this.lastHit = new Date().getTime();
+        this.lastMove = new Date().getTime();
         this.isHit = true;
         setTimeout(() => {
            this.isHit = false 

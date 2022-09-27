@@ -21,8 +21,16 @@ class Bottlebar extends DrawableObject {
     }
 
     updateBottles() {
-        this.bottles++;
+        this.addBottle();
         this.updateBottlebar();
+    }
+
+    removeBottle() {
+        this.bottles --;
+    }
+
+    addBottle() {
+        this.bottles++;
     }
 
     updateBottlebar() {

@@ -73,7 +73,7 @@ span {
     }
 }
 
-@media (max-height: 580px) {
+@media (max-height: 620px) {
     h1 {
         display: none;
     }

@@ -8,6 +8,12 @@ class Moveableobject extends DrawableObject{
     lastHit = 0; //weg?
     isAlive = true;
     isHit = false;
+    jumping_sound = new Audio('audio/jump.mp3');
+
+    constructor() {
+        super();
+        this.jumping_sound.volume = 0.4;
+    }
 
     applyGravity() {
         setInterval(() => {
@@ -48,6 +54,7 @@ class Moveableobject extends DrawableObject{
 
     jump() {
         this.speedY = 15;
+        this.jumping_sound.play();
         this.lastMove = new Date().getTime();
     }
 

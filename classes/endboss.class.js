@@ -54,8 +54,13 @@ class Endboss extends Moveableobject {
     animate() {
         let i = 0;
         setInterval(() => {
+            this.checkIfCharacterAtEndboss();
+            if (this.characterAriivedAtEndboss) {
+                i++;
+            }
             if (this.energy < 1) {
                 this.playAnimation(this.IMAGES_DEAD)
+                this.isAlive = false;
             } else if (this.hit) {
                 this.playAnimation(this.IMAGES_HIT)
             } else if (i < 30) {
@@ -63,10 +68,6 @@ class Endboss extends Moveableobject {
             } else {
                 this.playAnimation(this.IMAGES_WALKING);
                 this.moveLeft(5)
-            }
-            this.checkIfCharacterAtEndboss();
-            if (this.characterAriivedAtEndboss) {
-                i++;
             }
         }, 200);
     }
@@ -78,6 +79,10 @@ class Endboss extends Moveableobject {
     }
 
     endbossHit() {
+        this.hit = true;
+        setTimeout(() => {
+            this.hit = false;
+        }, 1000);
         this.energy -= 10;
         if (this.energy < 0) {
             this.energy = 0
@@ -87,9 +92,9 @@ class Endboss extends Moveableobject {
     playSound() {
 
         setInterval(() => {
-            if (this.characterAriivedAtEndboss && this.energy > 0) {
+            if (this.characterAriivedAtEndboss && !this.isAlive) {
                 this.endboss_sound.play()
-            }
+            } 
         }, 15000)
 
     }

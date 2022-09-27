@@ -12,6 +12,9 @@ class World {
     camera_x;
     keyboardPressed = false;
     gameOver = false;
+    intervalIds = [];
+    coin_sound = new Audio('audio/bling.mov');
+   
 
 
     constructor(canvas, keyboard) {
@@ -21,14 +24,15 @@ class World {
         this.draw();
         this.character.world = this;
         this.runInterval();
+        this.coin_sound.volume = 0.3;
     }
 
     draw() {
-        //cleart das Canvas
+        //clears canvas
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        //ermöglicht es zu laufen. Unserer camera ausschnitt verschiebt sich um carera_x
+        //ables character to walk. Shifts camera position by x
         this.ctx.translate(this.camera_x, 0)
-        //ab hier objekte ins canvas zeichnen
+        //section for drawing objects to canvas that relates to world (movable)
         this.drawToCanvasFromArray(this.level.backgroundObjects);
         this.drawToCanvasFromArray(this.level.clouds);
         this.drawToCanvasFromArray(this.level.bottles);
@@ -37,19 +41,22 @@ class World {
         this.drawToCanvas(this.character);
         this.drawToCanvasFromArray(this.level.enemies);
         this.drawToCanvas(this.endboss);
-        // this.drawToCanvasFromArray(this.level.endboss); //new
-        //part 2 der funktion zum laufen. setzt den cameraausschnitt wieder auf null
+        //resets camera position
         this.ctx.translate(-this.camera_x, 0)
+        //section for drawing objects to canvas that relates to screen (not movable)
         this.drawToCanvas(this.statusbar);
         this.drawToCanvas(this.coinbar);
         this.drawToCanvas(this.bottlebar);
-        //Draw wird immer wieder ausgeführt wenn die funktionen oberhalt fertig geladen sind. Das passiert so oft es die grafikkarte erlaubt 
+        //draw is run as often the graphic card allows it to do
         let self = this;
         requestAnimationFrame(function () {
             self.draw();
         });
     }
 
+    /**
+     * runs the game logic. checks collisions, if bottles are collected and if the game is over
+     */
     runInterval() {
         setInterval(() => {
             this.checkCollisions();
@@ -58,6 +65,9 @@ class World {
         }, 100);
     }
 
+    /**
+     * checks if objects are colliding
+     */
     checkCollisions() {
         this.checkEndboss();
         this.checkBottles();
@@ -67,24 +77,33 @@ class World {
         this.checkBottleHitEndboss();
     }
 
+    /**
+     * checks if variable gameOver is true and showes end screen
+     */
     checkForGameOver() {
         if (this.gameOver) {
             document.getElementById('outro-screen').classList.remove('d-none')
         }
     }
 
+
+    /**
+     * iterates through the array with the throwed bottles. Checkes if bottle 
+     * is colliding with endboss and triggers hit function
+     */
     checkBottleHitEndboss() {
         this.throwableBottles.forEach(bottle => {
             if (bottle.isColliding(this.endboss) && !this.endboss.hit) {
                 this.endboss.endbossHit();
-                this.endboss.hit = true;
-                setTimeout(() => {
-                    this.endboss.hit = false;
-                }, 1000);
             }
         });
     }
 
+    /**
+     * if there are throwed bottles in the array, the function iterates through it, then 
+     * itterates through the array with the enemies. Checkes if a bottle is colliding with 
+     * an enemy and triggers the kill enemy function
+     */
     checkBottleHitsEnemies() {
         if (this.throwableBottles) {
             this.throwableBottles.forEach(bottle => {
@@ -97,16 +116,26 @@ class World {
         }
     }
 
+    /**
+     * checkes if d is pressed and not hold down and if bottles are available to throw.
+     * If true set the key-pressed varible tue true and pushes a new bottle in the throwablebottle array.
+     * Then updates the bottlebar, the available bottles and the time of characters last move.
+     * If the first check was false, it checkes if the d key ist still pressed. If false, resets d pressed variable.
+     */
     checkThrowableBottles() {
         if(this.keyboard.D && !this.keyboardPressed && this.bottlebar.bottles > 0) {
             this.keyboardPressed = true;
             this.throwableBottles.push(new Throwablebottle(this.character.x + 50, this.character.y +100, this));
-            this.bottlebar.bottles --;
+            this.bottlebar.removeBottle();
             this.bottlebar.updateBottlebar();
-            this.character.lastMove = new Date().getTime();
+            this.updateCharactersLastMove();
         } else if (!this.keyboard.D) {
             this.keyboardPressed = false
         }
+    }
+
+    updateCharactersLastMove() {
+        this.character.lastMove = new Date().getTime();
     }
 
     drawToCanvas(object) {
@@ -168,6 +197,7 @@ class World {
                 let coinPosition = this.level.coins.indexOf(coin);
                 this.level.coins.splice(coinPosition, 1)
                 this.coinbar.updateCoins();
+                this.coin_sound.play();
             }
         });
     }

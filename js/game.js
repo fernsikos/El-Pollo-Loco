@@ -5,6 +5,7 @@ let keyboard = new Keyboard();
 
 function init() {
     canvas = document.getElementById('canvas');
+    checkForMobileDevice();
     initLevel();
     world = new World(canvas, keyboard);
     document.getElementById('intro-screen').classList.add('d-none');
@@ -22,36 +23,11 @@ function introAnimation() {
     }, 2000);
 }
 
-function fullscreen() {
-    let fullscreen = document.getElementById('fullscreen');
-    openFullscreen(fullscreen);
-}
-
-/* View in fullscreen */
-function openFullscreen(elem) {
-    document.getElementById('canvas').classList.add('canvasFullscreen')
-    if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-    } else if (elem.webkitRequestFullscreen) { /* Safari */
-        elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE11 */
-        elem.msRequestFullscreen();
+function checkForMobileDevice() {
+    if (window.innerWidth < 1000) {
+      screen.orientation.lock('landscape');
     }
-}
-
-/* Close fullscreen */
-function closeFullscreen() {
-    if (document.exitFullscreen) {
-        document.exitFullscreen();
-        restoreCanvasSize();
-    } else if (document.webkitExitFullscreen) { /* Safari */
-        document.webkitExitFullscreen();
-        restoreCanvasSize();
-    } else if (document.msExitFullscreen) { /* IE11 */
-        document.msExitFullscreen();
-        restoreCanvasSize();
-    }
-}
+  }
 
 function restoreCanvasSize() {
     document.getElementById('canvas').classList.remove('canvasFullscreen')
