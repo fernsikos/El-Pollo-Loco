@@ -5,19 +5,20 @@ let keyboard = new Keyboard();
 
 function init() {
     canvas = document.getElementById('canvas');
+    initLevel();
     world = new World(canvas, keyboard);
-    // document.getElementById('intro-screen').classList.add('d-none');
+    document.getElementById('intro-screen').classList.add('d-none');
 }
 
-// function introAnimation() {
-//     document.getElementById('intro-text').style = "transform: scale(1.2)";
-//     setTimeout(() => {
-//         document.getElementById('intro-text').style = "transform: scale(1.0)";
-//     }, 1000);
-//     setTimeout(() => {
-//         introAnimation()
-//     }, 2000);
-// }
+function introAnimation() {
+    document.getElementById('intro-text').style = "font-size: 31px; margin-top: 20px";
+    setTimeout(() => {
+        document.getElementById('intro-text').style = "font-size: 28px; margin-top: 22px";
+    }, 1000);
+    setTimeout(() => {
+        introAnimation()
+    }, 2000);
+}
 
 function fullscreen() {
     let fullscreen = document.getElementById('fullscreen');

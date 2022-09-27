@@ -1,4 +1,8 @@
-const level1 = new Level(
+let level1;
+
+function initLevel() {
+
+level1 = new Level(
     backgroundObjects = [
         new Background('img/5_background/layers/air.png', -720, 0),
         new Background('img/5_background/layers/3_third_layer/2.png', -720, 0),
@@ -94,3 +98,4 @@ const level1 = new Level(
         new Coin(2000, 195),
     ]
 );
+}

@@ -4,10 +4,21 @@ body {
     align-items: center;
     margin: 0;
     background-image: url('img/pics/desert-g5f1afeaee_1920.png');
+    font-family: Rye, sans-serif;
 }
 
 .d-none {
     display: none !important;
+}
+
+h1 {
+    font-size: 48px;
+}
+
+.container {
+    height: 480px;
+    /* width: 720px; */
+    position: relative;
 }
 
 canvas {
@@ -16,8 +27,33 @@ canvas {
     height: 100vh; */
 }
 
+img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 720px;
+    height: 480px;
+    cursor: pointer;
+}
+
+span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 28px;
+    margin-top: 20px;
+}
+
 @media (max-width: 720px) {
     canvas {
+        width: 100vw;
+    }
+
+    img {
         width: 100vw;
     }
 }
@@ -35,9 +71,31 @@ canvas {
 
 @media (max-height: 480px) {
     canvas {
+        height: 100%;
+    }
+
+    img {
         height: 100vh;
     }
+
+    body {
+        justify-content: unset;
+    }
 }
+
+/* rye-regular - latin */
+@font-face {
+    font-family: 'Rye';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/rye-v13-latin-regular.eot'); /* IE9 Compat Modes */
+    src: local(''),
+         url('../fonts/rye-v13-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('../fonts/rye-v13-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+         url('../fonts/rye-v13-latin-regular.woff') format('woff'), /* Modern Browsers */
+         url('../fonts/rye-v13-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('../fonts/rye-v13-latin-regular.svg#Rye') format('svg'); /* Legacy iOS */
+  }
 
 
  
