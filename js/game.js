@@ -24,6 +24,11 @@ function introAnimation() {
     }, 2000);
 }
 
+function toggleGamepad() {
+    document.getElementById('mobile-gamepad').classList.toggle('opacity-zero');
+    console.log("toggle")
+}
+
 function checkForMobileDevice() {
     if (window.innerWidth < 1000) {
       screen.orientation.lock('landscape');
