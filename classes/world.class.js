@@ -22,6 +22,7 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.character.world = this;
+        this.endboss.world = this;
         this.runInterval();
         this.coin_sound.volume = 0.3;
     }
@@ -35,11 +36,11 @@ class World {
         this.drawToCanvasFromArray(this.level.backgroundObjects);
         this.drawToCanvasFromArray(this.level.clouds);
         this.drawToCanvasFromArray(this.level.bottles);
-        this.drawToCanvasFromArray(this.throwableBottles);
         this.drawToCanvasFromArray(this.level.coins);
         this.drawToCanvas(this.character);
         this.drawToCanvasFromArray(this.level.enemies);
         this.drawToCanvas(this.endboss);
+        this.drawToCanvasFromArray(this.throwableBottles);
         //resets camera position
         this.ctx.translate(-this.camera_x, 0)
         //section for drawing objects to canvas that relates to screen (not movable)
@@ -101,6 +102,7 @@ class World {
         this.throwableBottles.forEach(bottle => {
             if (bottle.isColliding(this.endboss) && !this.endboss.hit) {
                 this.endboss.endbossHit();
+                bottle.bottleHit = true;
             }
         });
     }

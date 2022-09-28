@@ -12,6 +12,12 @@ class ChickenSmall extends Moveableobject {
     x;
     y = 385;
     imageDead = new Image();
+    offset = {
+        top: 10,
+        bottom: 10,
+        right: 10,
+        left: 10,
+    }
 
     constructor(x, y) {
         super();

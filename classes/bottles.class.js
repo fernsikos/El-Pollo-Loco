@@ -9,6 +9,12 @@ class Bottle extends DrawableObject {
     x;
     y = 370;
     randomImage = Math.round(Math.random());
+    offset = {
+        top: 10,
+        bottom: 10,
+        right: 20,
+        left: 20,
+    }
 
     constructor(x) {
         super();

@@ -34,9 +34,16 @@ class Endboss extends Moveableobject {
     width = 300;
     height = 400;
     energy = 100;
+    world;
     hit = false;
     characterAriivedAtEndboss = false;
     endboss_sound = new Audio('audio/chicken1.wav');
+    offset = {
+        top: 120,
+        bottom: 50,
+        right: 50,
+        left: 50,
+    }
 
 
 
@@ -84,19 +91,21 @@ class Endboss extends Moveableobject {
         setTimeout(() => {
             this.hit = false;
         }, 1000);
-        this.energy -= 10;
-        if (this.energy < 0) {
-            this.energy = 0
+        this.energy -= 25;
+        if (this.energy === 0) {
+            setTimeout(() => {
+               this.world.gameOver = true; 
+            }, 1000);
         }
     }
 
     playSound() {
 
         setInterval(() => {
-            if (this.characterAriivedAtEndboss && !this.isAlive) {
+            if (this.characterAriivedAtEndboss && this.isAlive) {
                 this.endboss_sound.play()
             } 
-        }, 15000)
+        }, 10000)
 
     }
 

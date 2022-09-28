@@ -20,7 +20,15 @@ class Throwablebottle extends Moveableobject {
     x = 150;
     y = 330;
     speedX = 3;
+    world;
+    bottleHit = false;
     shatter_sound = new Audio('audio/glas-shatter.mp3');
+    offset = {
+        top: 10,
+        bottom: 10,
+        right: 20,
+        left: 20,
+    }
     
 
     constructor(x, y, world) {
@@ -29,7 +37,8 @@ class Throwablebottle extends Moveableobject {
         this.loadImagesToCache(this.IMAGES_BOTTLESPLASH);
         this.createImage("img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png");
         this.applyGravity();
-        this.throw(x, y, world);
+        this.world = world;
+        this.throw(x, y);
         this.animate();
         this.shatter_sound.volume = 0.4;
     }
@@ -38,12 +47,12 @@ class Throwablebottle extends Moveableobject {
         let timeoutSet = false;
 
         let interval = setInterval(() => {
-            if (this.isAboveGround()) {
+            if (this.isAboveGround() && !this.bottleHit) {
                 this.playAnimation(this.IMAGES_BOTTLEANIMATION);
             } else {
                 if (!timeoutSet) {
                     timeoutSet = true;
-                    // this.shatterSound.play(); noch sound hinzufügen
+                    
                     
 
                     setTimeout(() => {
@@ -59,13 +68,13 @@ class Throwablebottle extends Moveableobject {
         }, 100);
     }
 
-    throw(x,y, world) {
+    throw(x,y) {
         if (!world.character.facingLeft) {
             this.x = x;
             this.y = y;
             this.speedY = 20;
                 setInterval(() => {
-                    if (this.y < 350) {
+                    if (this.y < 350 && !this.bottleHit) {
                         this.x += this.speedX;
                     } 
                 }, 1000/60);
@@ -74,7 +83,7 @@ class Throwablebottle extends Moveableobject {
             this.y = y;
             this.speedY = 20;
                 setInterval(() => {
-                    if (this.y < 350) {
+                    if (this.y < 350 && !this.bottleHit) {
                         this.x -= this.speedX;
                     } 
                 }, 1000/60);

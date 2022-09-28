@@ -70,6 +70,12 @@ class Character extends Moveableobject {
     walkingSpeed = 20;
     facingLeft = false;
     walking_sound = new Audio('audio/walking_modified.mp3');
+    offset = {
+        top: 120,
+        bottom: 15,
+        right: 35,
+        left: 30,
+    }
     
 
 

@@ -11,6 +11,12 @@ class Chicken extends Moveableobject {
     width = 60;
     ckickenSpeed = 0.15+ 0.3 * Math.random();
     imageDead = new Image();
+    offset = {
+        top: 15,
+        bottom: 15,
+        right: 15,
+        left: 15,
+    }
 
     constructor(x) {
         super();
