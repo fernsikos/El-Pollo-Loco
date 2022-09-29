@@ -28,10 +28,6 @@ h1 {
 
 canvas {
     background-color: black;
-    /* width: 100vw;
-    height: 100vh; */
-
-    background-color: black;
     background-size: cover;
     background-position: 55%;
     border-radius: 10px 10px 10px 10px;
@@ -39,6 +35,14 @@ canvas {
     pointer-events: none;
     z-index: 1;
 
+}
+
+.canvas-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 #intro-screen {
@@ -134,12 +138,17 @@ span {
         width: 100vw;
     }
 
+    .canvas-overlay {
+        width: 100vw;
+    }
+
     #intro-screen {
         width: 100vw;
     }
 
     .container {
-        width: unset !important;
+        /* width: unset !important; */
+        width: 100vw;
     }
 
 }
@@ -160,6 +169,10 @@ span {
         height: 100vh;
     }
 
+    .canvas-overlay {
+        height: 100vh;
+    }
+
     #intro-screen {
         height: 100vh;
     }
@@ -168,10 +181,9 @@ span {
         justify-content: unset;
     }
 
-    /* .container {
-        width: unset;
-        height: unset;
-    } */
+     .container {
+        height: 100vh
+    } 
 }
 
 /* rye-regular - latin */
