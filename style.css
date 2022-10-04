@@ -54,10 +54,21 @@ canvas {
     width: 100%;
     height: 480px;
     cursor: pointer;
-    z-index: 2;
+    z-index: 15;
 }
 
-#outro-screen {
+#intro-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 28px;
+    margin-top: 20px;
+    z-index: 16;
+}
+
+#outro-screen-game-over, #outro-screen-you-lost {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -66,36 +77,80 @@ canvas {
     width: 100vw;
     height: 100vh;
     cursor: pointer;
+    z-index: 16;
 }
 
-span {
+#help-section-container {
     position: absolute;
     top: 0;
+    bottom: 0;
     left: 0;
     right: 0;
-    text-align: center;
-    font-size: 28px;
-    margin-top: 20px;
-    z-index: 3;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.301);
+    border-radius: 10px 10px 10px 10px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    transition: opacity ease-in-out 0.5s;
 }
 
-.help-container {
+#help-section-container h2 {
+    font-size: 30px;
+}
+
+.help-section-content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.help-section-content-top {
+    margin-bottom: 5px;
+}
+
+.gamepad-help-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.gamepad-help-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+    text-align: center;
+}
+
+.gamepad-help-content img {
+    height: 18px;
+    width: 18px;
+    border: 2px solid black;
+    border-radius: 50%;
+    padding: 4px;
+    margin-bottom: 5px;
+}
+
+.help-btn-container {
     position: absolute;
     top: 0;
     right: 0;
     background-color: #00000060;
-    border-radius: 0 0 0 40px;
+    border-radius: 0 10px 0 40px;
     padding: 5px;
-
+    z-index: 11;
 }
 
-.help-container img {
+.help-btn-container img {
     background-color: #BB4600;
     border-radius: 50%;
-    padding: 10px;
+    padding: 7px;
     margin: 5px;
     cursor: pointer;
-    z-index: 10;
+
 }
 
 #mobile-gamepad {
@@ -128,8 +183,8 @@ span {
 .mobile-container-left img, .mobile-container-right img {
     background-color: #BB4600;
     border-radius: 50%;
-    padding: 10px;
-    margin: 10px;
+    padding: 7px;
+    margin: 5px;
 }
 
 
@@ -142,7 +197,7 @@ span {
         width: 100vw;
     }
 
-    #intro-screen {
+    #intro-screen, #help-section-container {
         width: 100vw;
     }
 
@@ -152,6 +207,58 @@ span {
         height: auto;
     }
 
+    .help-container img {
+        margin: 4;
+        padding: 5;
+        width: 24px;
+        height: 24px;
+    }
+
+    .help-container {
+        padding: 0 0 0 5px;
+    }
+
+    #mobile-gamepad {
+        margin-bottom: 10px;
+    }
+
+    .mobile-container-left {
+        padding: 5px 5px 5px 0;
+    }
+
+    .mobile-container-right {
+        padding: 5px 0 5px 5px;
+    }
+
+    .mobile-container-left img, .mobile-container-right img {
+        margin: 4;
+        padding: 5;
+        width: 24px;
+        height: 24px;
+    }
+}
+
+@media (max-width: 520px) {
+    #help-section-container h2 {
+        font-size: 25px;
+    }
+
+    .help-section-content-container {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 460px) {
+    .help-container img {
+        margin: 2 !important;
+        width: 18px !important;
+        height: 18px !important;
+    }
+
+    .mobile-container-left img, .mobile-container-right img {
+        width: 18px !important;
+        height: 18px !important;
+    }
 }
 
 @media (max-height: 620px) {
@@ -182,10 +289,63 @@ span {
         justify-content: unset;
     }
 
-     .container {
+    .container {
         height: 100vh;
         width: auto;
-    } 
+    }
+
+    .help-container img {
+        margin: 4;
+        padding: 5;
+        width: 24px;
+        height: 24px;
+    }
+
+    .help-container {
+        padding: 0 0 0 5px;
+    }
+
+    #mobile-gamepad {
+        margin-bottom: 10px;
+    }
+
+    .mobile-container-left {
+        padding: 5px 5px 5px 0;
+    }
+
+    .mobile-container-right {
+        padding: 5px 0 5px 5px;
+    }
+
+    .mobile-container-left img, .mobile-container-right img {
+        margin: 4;
+        padding: 5;
+        width: 24px;
+        height: 24px;
+    }
+}
+
+@media (max-height: 400px) {
+    #help-section-container h2 {
+        font-size: 25px;
+    }
+
+    .help-section-content-container {
+        font-size: 12px;
+    }
+}
+
+@media (max-height: 300px) {
+    .help-container img {
+        margin: 2 !important;
+        width: 18px !important;
+        height: 18px !important;
+    }
+
+    .mobile-container-left img, .mobile-container-right img {
+        width: 18px !important;
+        height: 18px !important;
+    }
 }
 
 /* rye-regular - latin */

@@ -34,10 +34,38 @@
         <canvas id="canvas" width="720" height="480"></canvas>
         <span id="intro-text" onclick="init()">Click To Start Game</span>
         <img src="img/9_intro_outro_screens/start/startscreen_1.png" alt="" onclick="init()" id="intro-screen">
+        <div id="help-section-container" class="opacity-zero">
+            <h2>How to play</h2>
+            <div class="help-section-content-container">
+                <span class="help-section-content-top">• Kill the chickens by jumping on it</span>
+                <span class="help-section-content-top">• Kill the chicken by thow a bottle on it</span>
+                <span class="help-section-content-top">• Kill the endboss by thow 5 bottles on it</span>
+                <div class="gamepad-help-container">
+                    <div class="gamepad-help-content">
+                        <img src="img/icons/arrow-left.png" alt="" class="gamepad-help-top">
+                        <span class="gamepad-help-bottom">walk left</span>
+                    </div>
+                    <div class="gamepad-help-content">
+                        <img src="img/icons/arrow-right.png" alt="" class="gamepad-help-top">
+                        <span class="gamepad-help-bottom">walk right</span>
+                    </div>
+                    <div class="gamepad-help-content">
+                        <img src="img/icons/arrow-up.png" alt="" class="gamepad-help-top">
+                        <span class="gamepad-help-bottom">jump (Space)</span>
+                    </div>
+                    <div class="gamepad-help-content">
+                        <img src="img/icons/bottle.png" alt="" class="gamepad-help-top">
+                        <span class="gamepad-help-bottom">throw bottle (D)</span>
+                    </div>
+                </div>
+            </div>
+            
+
+        </div>
         <div class="canvas-overlay" width="720" height="480">
-            <div class="help-container">
+            <div class="help-btn-container">
                 <img src="img/icons/joystick.png" alt="" onclick="toggleGamepad()">
-                <img src="img/icons/help.png" alt="">
+                <img src="img/icons/help.png" alt="" onclick="toggleHelpSection()">
             </div>
             <div id="mobile-gamepad" class="opacity-zero">
                 <div class="mobile-container-left">
@@ -51,17 +79,13 @@
             </div>
         </div>
     </div>
-    <img src="img/9_intro_outro_screens/game_over/game over.png" alt="" id="outro-screen" class="d-none"
-        onclick="init()">
+    <img src="img/9_intro_outro_screens/game_over/game over.png" alt="" id="outro-screen-game-over" class="d-none" onclick="init()">
+    <img src="img/9_intro_outro_screens/game_over/you lost.png" alt="" id="outro-screen-you-lost" class="d-none" onclick="init()">
 
 </body>
 
 </html>
 
-<!-- Bugs/Imptovements:
-Help section
-win screen (endboss muss überarbeitet werden)
+<!-- Bugs/Improvements:
 coin sound
-responsive für kleine bildschirme
-
 -->

@@ -13,7 +13,9 @@ function init() {
     world = new World(canvas);
     document.getElementById('intro-screen').classList.add('d-none');
     document.getElementById('intro-text').classList.add('d-none');
-    document.getElementById('outro-screen').classList.add('d-none');
+    document.getElementById('outro-screen-game-over').classList.add('d-none');
+    document.getElementById('outro-screen-you-lost').classList.add('d-none');
+    document.getElementById('help-section-container').classList.add('opacity-zero');
 }
 
 /**
@@ -34,7 +36,10 @@ function introAnimation() {
  */
 function toggleGamepad() {
     document.getElementById('mobile-gamepad').classList.toggle('opacity-zero');
-    console.log("toggle")
+}
+
+function toggleHelpSection() {
+    document.getElementById('help-section-container').classList.toggle('opacity-zero');
 }
 
 /**

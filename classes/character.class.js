@@ -70,6 +70,7 @@ class Character extends Moveableobject {
     walkingSpeed = 20;
     facingLeft = false;
     walking_sound = new Audio('audio/walking_modified.mp3');
+    hit_sound = new Audio('audio/ouch.mov')
     offset = {
         top: 120,
         bottom: 15,
@@ -89,7 +90,7 @@ class Character extends Moveableobject {
         this.loadImagesToCache(this.IMAGES_SLEEPING);
         this.loadImagesToCache(this.IMAGES_DEAD);
         this.loadImagesToCache(this.IMAGES_HURT);
-        // this.walking_sound.volume = 0.7;
+        this.hit_sound.volume = 0.3;
         this.animate();
         this.applyGravity();
     }
@@ -110,6 +111,7 @@ class Character extends Moveableobject {
     hit() {
         this.energy -= 20;
         this.world.statusbar.syncronizeStatusbar(this.energy);
+        this.hit_sound.play();
         this.lastHit = new Date().getTime();
         this.lastMove = new Date().getTime();
         this.setHitCycle();

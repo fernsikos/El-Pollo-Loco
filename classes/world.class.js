@@ -12,6 +12,7 @@ class World {
     camera_x;
     gameOver = false;
     coin_sound = new Audio('audio/bling.mov');
+    bottle_sound = new Audio('audio/bottle-open.mp3')
 
     constructor(canvas) {
         this.ctx = canvas.getContext('2d');
@@ -21,6 +22,7 @@ class World {
         this.endboss.world = this;
         this.runInterval();
         this.coin_sound.volume = 0.3;
+        this.bottle_sound.volume = 0.5;
     }
 
     /**
@@ -36,12 +38,17 @@ class World {
     }
 
     /**
-     * checks if variable gameOver is true and showes end screen.
+     * checks if variable gameOver is true.
+     * Showes you lost screen if character lost, or game over, if endboss lost.
      */
     checkForGameOver() {
         if (this.gameOver) {
             this.clearIntervals()
-            document.getElementById('outro-screen').classList.remove('d-none')
+            if(this.character.isAlive) {
+                document.getElementById('outro-screen-game-over').classList.remove('d-none')
+            } else {
+                document.getElementById('outro-screen-you-lost').classList.remove('d-none')
+            }
             this.character.walking_sound.pause();
         }
     }
@@ -128,6 +135,7 @@ class World {
 
     /**
      * iterates through all bottles and checks if the character is colliding with it.
+     * If true, playes bottle sound and updates bottles.
      */
     checkBottles() {
         this.level.bottles.forEach(bottle => {
@@ -135,6 +143,7 @@ class World {
                 let bottlePosition = this.level.bottles.indexOf(bottle);
                 this.level.bottles.splice(bottlePosition, 1);
                 this.bottlebar.updateBottles();
+                this.bottle_sound.play();
             }
         });
     }
