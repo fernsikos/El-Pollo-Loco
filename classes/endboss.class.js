@@ -107,11 +107,12 @@ class Endboss extends Moveableobject {
      * Playes chicken sound every 10s after character arrived at endboss.
      */
     playSound() {
-        setInterval(() => {
+         let interval = setInterval(() => {
             if (this.characterAriivedAtEndboss && this.isAlive) {
                 this.endboss_sound.play()
             }
-        }, 10000)
+        }, 10000);
+        intervalIds.push(interval);
     }
 
     // Templates/Returns
