@@ -8,7 +8,6 @@ intervalIds = [];
  */
 function init() {
     canvas = document.getElementById('canvas');
-    checkForMobileDevice();
     initLevel();
     world = new World(canvas);
     document.getElementById('intro-screen').classList.add('d-none');
@@ -41,16 +40,4 @@ function toggleGamepad() {
 function toggleHelpSection() {
     document.getElementById('help-section-container').classList.toggle('opacity-zero');
 }
-
-/**
- * Check if user uses a mobile device and locks screen in landscape mode.
- */
-function checkForMobileDevice() {
-    if (window.innerWidth < 1000) {
-        screen.orientation.lock('landscape');
-    }
-}
-
-
-
 

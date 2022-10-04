@@ -213,7 +213,7 @@ class World {
         this.drawToCanvasFromArray(this.level.clouds);
         this.drawToCanvasFromArray(this.level.bottles);
         this.drawToCanvasFromArray(this.level.coins);
-        this.drawToCanvas(this.character);
+        this.drawCharacterToCanvas(this.character);
         this.drawToCanvasFromArray(this.level.enemies);
         this.drawToCanvas(this.endboss);
         this.drawToCanvasFromArray(this.throwableBottles);
@@ -236,6 +236,19 @@ class World {
      * @param {Object} object 
      */
     drawToCanvas(object) {
+        if (this.isOnCanvas(object)) {
+            if (object.imageMirrored) {
+                this.flipImage(object);
+            };
+            object.draw(this.ctx);
+            // object.drawRectangles(this.ctx); For develloper purpose only
+            if (object.imageMirrored) {
+                this.restoreImage(object);
+            }
+        }
+    }
+
+    drawCharacterToCanvas(object) {
         if (object.imageMirrored) {
             this.flipImage(object);
         };
@@ -244,6 +257,11 @@ class World {
         if (object.imageMirrored) {
             this.restoreImage(object);
         }
+    }
+
+    isOnCanvas(object) {
+        return !this instanceof Character && object.x + object.width + this.camera_x > 0 &&
+        object.x + this.camera_x < 720
     }
 
     /**

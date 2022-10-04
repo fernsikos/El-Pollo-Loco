@@ -99,7 +99,7 @@ class Endboss extends Moveableobject {
     endbossHit() {
         this.hit = true;
         this.resetHitVariable();
-        this.energy -= 25;
+        this.energy -= 20;
         this.checkIfEndbossDead();
     }
 
