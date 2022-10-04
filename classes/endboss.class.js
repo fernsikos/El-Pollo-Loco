@@ -28,7 +28,7 @@ class Endboss extends Moveableobject {
         "img/4_enemie_boss_chicken/5_dead/G25.png",
         "img/4_enemie_boss_chicken/5_dead/G26.png",
     ]
-    
+
     x = 3200;
     y = 50;
     width = 300;
@@ -58,6 +58,9 @@ class Endboss extends Moveableobject {
         this.playSound();
     }
 
+    /**
+     * Animates the endboss. Playes alert animation with some delay until character arrives at endboss.
+     */
     animate() {
         let i = 0;
         let interval = setInterval(() => {
@@ -80,33 +83,56 @@ class Endboss extends Moveableobject {
         intervalIds.push(interval);
     }
 
+    /**
+     * Checkes if character arrived at endboss with comparing their x values
+     */
     checkIfCharacterAtEndboss() {
         if (world.character.x > world.endboss.x - 400) {
             this.characterAriivedAtEndboss = true;
         }
     }
 
+    /**
+     * Set enboss variable to hit, reduces energy from endboss, and reset hit variable after delay.
+     * Initiates game over when endboss dead
+     */
     endbossHit() {
         this.hit = true;
-        setTimeout(() => {
-            this.hit = false;
-        }, 1000);
+        this.resetHitVariable();
         this.energy -= 25;
-        if (this.energy === 0) {
-            setTimeout(() => {
-               this.world.gameOver = true; 
-            }, 1000);
-        }
+        this.checkIfEndbossDead();
     }
 
+    /**
+     * Playes chicken sound every 10s after character arrived at endboss.
+     */
     playSound() {
-
         setInterval(() => {
             if (this.characterAriivedAtEndboss && this.isAlive) {
                 this.endboss_sound.play()
-            } 
+            }
         }, 10000)
-
     }
 
+    // Templates/Returns
+
+    /**
+     * Reset hit variable after delay of 1s.
+     */
+    resetHitVariable() {
+        setTimeout(() => {
+            this.hit = false;
+        }, 1000);
+    }
+
+    /**
+     * Checkes if endboss is dead and triggers game over after delay.
+     */
+    checkIfEndbossDead() {
+        if (this.energy === 0) {
+            setTimeout(() => {
+                this.world.gameOver = true;
+            }, 1000);
+        }
+    }
 }

@@ -5,73 +5,118 @@ class Keyboard {
     RIGHT;
     SPACE;
     D;
+    PRESSED;
 
     constructor() {
         this.keyboardEvents();
         this.touchEvents();
     }
 
+    /**
+     * Eventlistener for touch inputs.
+     */
     touchEvents() {
         document.getElementById('btn-up').addEventListener('touchstart', (e) => {
             e.preventDefault();
-            this.UP = true;
+            this.SPACE = true;
         });
-        
+
         document.getElementById('btn-up').addEventListener('touchend', (e) => {
             e.preventDefault();
-            this.UP = false;
+            this.SPACE = false;
+        });
+
+        document.getElementById('btn-left').addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            this.LEFT = true;
+        });
+
+        document.getElementById('btn-left').addEventListener('touchend', (e) => {
+            e.preventDefault();
+            this.LEFT = false;
+        });
+
+        document.getElementById('btn-right').addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            this.RIGHT = true;
+        });
+
+        document.getElementById('btn-right').addEventListener('touchend', (e) => {
+            e.preventDefault();
+            this.RIGHT = false;
+        });
+
+        document.getElementById('btn-bottle').addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            this.D = true;
+        });
+
+        document.getElementById('btn-bottle').addEventListener('touchend', (e) => {
+            e.preventDefault();
+            this.D = false;
         });
     }
 
+    /**
+     * Eventlistener for keypress inputs.
+     */
     keyboardEvents() {
         window.addEventListener('keydown', (event) => {
             if (event.keyCode == 37) {
-                keyboard.LEFT = true;
+                this.LEFT = true;
             }
-        
+
             if (event.keyCode == 38) {
-                keyboard.UP = true;
+                this.UP = true;
             }
-        
+
             if (event.keyCode == 39) {
-                keyboard.RIGHT = true;
+                this.RIGHT = true;
             }
-        
+
             if (event.keyCode == 40) {
-                keyboard.DOWN = true;
+                this.DOWN = true;
             }
-        
+
             if (event.keyCode == 32) {
-                keyboard.SPACE = true;
+                this.SPACE = true;
             }
-            if (event.keyCode == 68) {
-                keyboard.D = true;
+            if (event.keyCode == 68 && !this.PRESSED) {
+                this.D = true;
+                this.PRESSED = true;
+                setTimeout(() => {
+                    this.D = false;
+                }, 100);
             }
         });
 
+        /**
+         * Eventlistener for keyup inputs.
+         */
         window.addEventListener('keyup', (event) => {
             if (event.keyCode == 37) {
-                keyboard.LEFT = false;
+                this.LEFT = false;
             }
-        
+
             if (event.keyCode == 38) {
-                keyboard.UP = false;
+                this.UP = false;
             }
-        
+
             if (event.keyCode == 39) {
-                keyboard.RIGHT = false;
+                this.RIGHT = false;
             }
-        
+
             if (event.keyCode == 40) {
-                keyboard.DOWN = false;
+                this.DOWN = false;
             }
-        
+
             if (event.keyCode == 32) {
-                keyboard.SPACE = false;
+                this.SPACE = false;
             }
-        
+
             if (event.keyCode == 68) {
-                keyboard.D = false;
+                this.D = false;
+                this.PRESSED = false;
             }
         })
     }

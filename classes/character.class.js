@@ -76,7 +76,7 @@ class Character extends Moveableobject {
         right: 35,
         left: 30,
     }
-    
+
 
 
 
@@ -94,8 +94,64 @@ class Character extends Moveableobject {
         this.applyGravity();
     }
 
-
+    /**
+     * Animates characters position in relation to player input.
+     * Sycronizes picture animation in relation to his movements, health status and actions.
+     */
     animate() {
+        this.animateMovements();
+        this.animateImages();
+    }
+
+    /**
+     * Reduces energy from character, syncronizes healthbar and updates time of last hit and move.
+     * Set character to hit for 1s and checkes if character is dead.
+     */
+    hit() {
+        this.energy -= 20;
+        this.world.statusbar.syncronizeStatusbar(this.energy);
+        this.lastHit = new Date().getTime();
+        this.lastMove = new Date().getTime();
+        this.setHitCycle();
+        this.checkIfCharacterDead();
+    }
+
+    /**
+     * Comparing current time with time of characters last move.
+     * @returns True if character is not moving longer then 0.1s but shorter then 5s.
+     */
+    isResting() {
+        let timePassedSinceLAstMove = new Date().getTime() - this.lastMove;
+        timePassedSinceLAstMove = timePassedSinceLAstMove / 1000;
+        return timePassedSinceLAstMove > 0.1 && timePassedSinceLAstMove < 5;
+    }
+
+    /**
+     * Comparing current time with time of characters last move.
+     * @returns True if character is not moving longer then 5s.
+     */
+    isSleeping() {
+        let timePassedSinceLAstMove = new Date().getTime() - this.lastMove;
+        timePassedSinceLAstMove = timePassedSinceLAstMove / 1000;
+        return timePassedSinceLAstMove > 5;
+    }
+
+    /**
+     * Comparing current time with time oc characters last hit.
+     * @returns True if for 0.5s character got hit.
+     */
+    isHurt() {
+        let timePassed = new Date().getTime() - this.lastHit;
+        timePassed = timePassed / 1000;
+        return timePassed < 0.5;
+    }
+
+    // Templates/Returns
+
+    /**
+     * Animates characters movements in relation to player input.
+     */
+    animateMovements() {
         let interval = setInterval(() => {
             this.walking_sound.pause();
             if (this.world.keyboard.SPACE && !this.isAboveGround()) {
@@ -106,7 +162,6 @@ class Character extends Moveableobject {
                 this.facingLeft = false;
                 if (!this.isAboveGround()) { this.walking_sound.play() };
             };
-
             if (this.world.keyboard.LEFT && this.x > this.world.level.level_start) {
                 this.imageMirrored = true;
                 this.facingLeft = true;
@@ -114,9 +169,14 @@ class Character extends Moveableobject {
                 if (!this.isAboveGround()) { this.walking_sound.play() };
             }
             this.world.camera_x = 100 - this.x;
-
         }, 1000 / 15);
+        intervalIds.push(interval);
+    }
 
+    /**
+     * Animates characters pictures in relation to player input, health status and actions.
+     */
+    animateImages() {
         let interval2 = setInterval(() => {
             if (this.energy === 0) {
                 this.playAnimation(this.IMAGES_DEAD);
@@ -132,47 +192,27 @@ class Character extends Moveableobject {
                 this.playAnimation(this.IMAGES_RESTING)
             }
         }, 1000 / 10);
-        
-        intervalIds.push(interval);
         intervalIds.push(interval2);
-        
-
     }
 
-    hit() {
-        this.energy -= 20;
-        this.world.statusbar.syncronizeStatusbar(this.energy);
-        this.lastHit = new Date().getTime();
-        this.lastMove = new Date().getTime();
+    /**
+     * Sets is hit variable to true und resets it after delay of 1s.
+     */
+    setHitCycle() {
         this.isHit = true;
         setTimeout(() => {
-           this.isHit = false 
+            this.isHit = false
         }, 1000);
+    }
+
+    /**
+     * Checkes if energy of character if lower then 1.
+     * If true sets variable to not alive and game over.
+     */
+    checkIfCharacterDead() {
         if (this.energy < 1) {
             this.isAlive = false;
             this.world.gameOver = true;
         }
-        if (this.energy < 0) {
-            this.energy = 0
-            
-        }
-    }
-
-    isResting() {
-        let timePassedSinceLAstMove = new Date().getTime() - this.lastMove;
-        timePassedSinceLAstMove = timePassedSinceLAstMove / 1000;
-        return timePassedSinceLAstMove > 0.1 && timePassedSinceLAstMove < 5;
-    }
-
-    isSleeping() {
-        let timePassedSinceLAstMove = new Date().getTime() - this.lastMove;
-        timePassedSinceLAstMove = timePassedSinceLAstMove / 1000;
-        return timePassedSinceLAstMove > 5;
-    }
-
-    isHurt() {
-        let timePassed = new Date().getTime() - this.lastHit;
-        timePassed = timePassed / 1000;
-        return timePassed < 0.5;
     }
 }

@@ -8,7 +8,7 @@ class ChickenSmall extends Moveableobject {
 
     height = 40;
     width = 45;
-    ckickenSpeed = 0.15+ 0.3 * Math.random();
+    ckickenSpeed = 0.15 + 0.3 * Math.random();
     x;
     y = 385;
     imageDead = new Image();
@@ -28,19 +28,22 @@ class ChickenSmall extends Moveableobject {
         this.animate();
     }
 
+    /**
+     * Animates the chicken by changing its position with random speed and showing walking animation.
+     */
     animate() {
         let interval = setInterval(() => {
             if (!this.isHit) {
                 this.moveLeft(this.ckickenSpeed)
             }
-        }, 1000/60);
+        }, 1000 / 60);
 
         let interval2 = setInterval(() => {
             if (!this.isHit) {
                 this.playAnimation(this.IMAGES_WALKING)
             }
-        }, 1000/7);
+        }, 1000 / 7);
         intervalIds.push(interval);
         intervalIds.push(interval2);
-     }
+    }
 }

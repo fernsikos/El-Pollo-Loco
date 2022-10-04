@@ -20,23 +20,30 @@ class Statusbar extends DrawableObject {
         this.createImage("img/7_statusbars/1_statusbar/2_statusbar_health/green/100.png");
     }
 
+    /**
+     * Syncronize this health status the energy level of character.
+     * @param {Variable} energy energy of character.
+     */
     syncronizeStatusbar(energy) {
         this.healthStatus = energy;
         this.updateStatusbar();
     }
 
+    /**
+     * Updates the healthbar with the right pictures in relation to health status.
+     */
     updateStatusbar() {
-        if(this.healthStatus == 100) {
+        if (this.healthStatus == 100) {
             this.createImage("img/7_statusbars/1_statusbar/2_statusbar_health/green/100.png");
-        } else if(this.healthStatus > 80) {
+        } else if (this.healthStatus > 80) {
             this.createImage("img/7_statusbars/1_statusbar/2_statusbar_health/green/80.png");
-        } else if(this.healthStatus > 60) {
+        } else if (this.healthStatus > 60) {
             this.createImage("img/7_statusbars/1_statusbar/2_statusbar_health/green/60.png");
-        } else if(this.healthStatus > 40) {
+        } else if (this.healthStatus > 40) {
             this.createImage("img/7_statusbars/1_statusbar/2_statusbar_health/green/40.png");
-        } else if(this.healthStatus > 20) {
+        } else if (this.healthStatus > 20) {
             this.createImage("img/7_statusbars/1_statusbar/2_statusbar_health/green/20.png");
-        } else if(this.healthStatus == 0) {
+        } else if (this.healthStatus == 0) {
             this.createImage("img/7_statusbars/1_statusbar/2_statusbar_health/green/0.png");
         }
     }

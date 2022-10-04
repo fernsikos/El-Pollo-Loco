@@ -32,7 +32,7 @@
     <h1>El Pollo Loco</h1>
     <div class="container">
         <canvas id="canvas" width="720" height="480"></canvas>
-        <span id="intro-text">Click To Start Game</span>
+        <span id="intro-text" onclick="init()">Click To Start Game</span>
         <img src="img/9_intro_outro_screens/start/startscreen_1.png" alt="" onclick="init()" id="intro-screen">
         <div class="canvas-overlay" width="720" height="480">
             <div class="help-container">
@@ -58,8 +58,10 @@
 
 </html>
 
-<!-- Bugs:
-    walking sound intervall on game over is not stoping
-    if key d is locked down move to key class
+<!-- Bugs/Imptovements:
+Help section
+win screen (endboss muss überarbeitet werden)
+coin sound
+responsive für kleine bildschirme
 
 -->

@@ -1,4 +1,4 @@
-class Background extends Moveableobject{
+class Background extends Moveableobject {
     x = 0;
     y = 0;
     height = 480;
@@ -8,7 +8,7 @@ class Background extends Moveableobject{
         super();
         this.createImage(imagePath);
         this.x = x;
-        this. y = y;
+        this.y = y;
     }
 
 }

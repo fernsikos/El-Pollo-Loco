@@ -8,18 +8,14 @@ class World {
     endboss = new Endboss();
     level = level1;
     throwableBottles = [];
-    keyboard;
+    keyboard = new Keyboard();
     camera_x;
-    keyboardPressed = false;
     gameOver = false;
     coin_sound = new Audio('audio/bling.mov');
 
-
-
-    constructor(canvas, keyboard) {
+    constructor(canvas) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
-        this.keyboard = keyboard;
         this.draw();
         this.character.world = this;
         this.endboss.world = this;
@@ -27,6 +23,177 @@ class World {
         this.coin_sound.volume = 0.3;
     }
 
+    /**
+     * runs the game logic. checks collisions, if bottles are collected and if the game is over.
+     */
+    runInterval() {
+        let interval = setInterval(() => {
+            this.checkCollisions();
+            this.checkThrowableBottles();
+            this.checkForGameOver();
+        }, 100);
+        intervalIds.push(interval);
+    }
+
+    /**
+     * checks if variable gameOver is true and showes end screen.
+     */
+    checkForGameOver() {
+        if (this.gameOver) {
+            this.clearIntervals()
+            document.getElementById('outro-screen').classList.remove('d-none')
+            this.character.walking_sound.pause();
+        }
+    }
+
+    /**
+     * is clearing all necessary intervalls.
+     */
+    clearIntervals() {
+        intervalIds.forEach(id => {
+            clearInterval(id)
+        });
+    }
+
+    /**
+     * checks if objects are colliding.
+     */
+    checkCollisions() {
+        this.checkEndboss();
+        this.checkBottles();
+        this.checkCoins();
+        this.checkEnemies();
+        this.checkBottleHitsEnemies();
+        this.checkBottleHitEndboss();
+    }
+
+    /**
+     * iterates through the array with the throwed bottles. Checkes if bottle 
+     * is colliding with endboss and triggers hit function.
+     */
+    checkBottleHitEndboss() {
+        this.throwableBottles.forEach(bottle => {
+            if (bottle.isColliding(this.endboss) && !this.endboss.hit) {
+                this.endboss.endbossHit();
+                bottle.bottleHit = true;
+            }
+        });
+    }
+
+    /**
+     * if there are throwed bottles in the array, the function iterates through it, then 
+     * itterates through the array with the enemies. Checkes if a bottle is colliding with 
+     * an enemy and triggers the kill enemy function.
+     */
+    checkBottleHitsEnemies() {
+        if (this.throwableBottles) {
+            this.throwableBottles.forEach(bottle => {
+                this.level.enemies.forEach(enemy => {
+                    if (bottle.isColliding(enemy) && !enemy.isHit) {
+                        this.killEnemy(enemy);
+                    }
+                });
+            });
+        }
+    }
+
+    /**
+     * Checkes if character is hit by an enemy or if the character is jumping on an enemy.
+     * 
+     */
+    checkEnemies() {
+        this.level.enemies.forEach(enemy => {
+            if (this.characterHitByEnemy(enemy)) {
+                this.character.hit();
+            } else if (this.characterJumpOnEnemy(enemy)) {
+                this.killEnemy(enemy);
+                this.character.jump();
+            }
+        });
+    }
+
+    /**
+    * iterates through all coins and checkes if character is colliding with it.
+    */
+    checkCoins() {
+        this.level.coins.forEach(coin => {
+            if (this.character.isColliding(coin)) {
+                let coinPosition = this.level.coins.indexOf(coin);
+                this.level.coins.splice(coinPosition, 1)
+                this.coinbar.updateCoins();
+                this.coin_sound.play();
+            }
+        });
+    }
+
+    /**
+     * iterates through all bottles and checks if the character is colliding with it.
+     */
+    checkBottles() {
+        this.level.bottles.forEach(bottle => {
+            if (this.character.isColliding(bottle)) {
+                let bottlePosition = this.level.bottles.indexOf(bottle);
+                this.level.bottles.splice(bottlePosition, 1);
+                this.bottlebar.updateBottles();
+            }
+        });
+    }
+
+    /**
+     * Checkes if the endboss is colliding with character.
+     */
+    checkEndboss() {
+        if (this.character.isColliding(this.endboss)) {
+            this.character.hit();
+        }
+    }
+
+    /**
+     * checkes  if bottles are available to throw.
+     * If pushes a new bottle in the throwablebottle array.
+     * Then updates the bottlebar, the available bottles and the time of characters last move.
+     */
+    checkThrowableBottles() {
+        if (this.keyboard.D && this.bottlebar.bottles > 0) {
+            this.throwableBottles.push(new Throwablebottle(this.character.x + 50, this.character.y + 100, this));
+            this.bottlebar.removeBottle();
+            this.bottlebar.updateBottlebar();
+            this.updateCharactersLastMove();
+        }
+    }
+
+    /**
+     * updates the time from the characters last move .
+     */
+    updateCharactersLastMove() {
+        this.character.lastMove = new Date().getTime();
+    }
+
+    /**
+     * Sets the parameter of an enemy to Hit and not Alive.
+     * Shows the picture of a dead enemy and removes it after 2 sec.
+     * @param {Object} enemy 
+     */
+    killEnemy(enemy) {
+        enemy.isHit = true;
+        enemy.isAlive = false;
+        enemy.img = enemy.imageDead;
+        setTimeout(this.removeDeadEnemies, 2000, this)
+    }
+
+    /**
+     * Removes all dead enemies from the world with filtering for alive enemies.
+     * @param {Object} world 
+     */
+    removeDeadEnemies(world) {
+        if (world.level.enemies) {
+            world.level.enemies = world.level.enemies.filter((e) => e.isAlive)
+        }
+    }
+
+    /**
+     * Function for drawing objects to the canvas.
+     */
     draw() {
         //clears canvas
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -55,104 +222,8 @@ class World {
     }
 
     /**
-     * runs the game logic. checks collisions, if bottles are collected and if the game is over
-     */
-    runInterval() {
-        let interval = setInterval(() => {
-            this.checkCollisions();
-            this.checkThrowableBottles();
-            this.checkForGameOver();
-        }, 100);
-        intervalIds.push(interval);
-    }
-
-    /**
-     * checks if objects are colliding
-     */
-    checkCollisions() {
-        this.checkEndboss();
-        this.checkBottles();
-        this.checkCoins();
-        this.checkEnemies();
-        this.checkBottleHitsEnemies();
-        this.checkBottleHitEndboss();
-    }
-
-    /**
-     * checks if variable gameOver is true and showes end screen
-     */
-    checkForGameOver() {
-        if (this.gameOver) {
-            this.clearIntervals()
-            document.getElementById('outro-screen').classList.remove('d-none')
-        }
-    }
-
-    clearIntervals() {
-        intervalIds.forEach(id => {
-            clearInterval(id)
-        });
-    }
-
-    /**
-     * iterates through the array with the throwed bottles. Checkes if bottle 
-     * is colliding with endboss and triggers hit function
-     */
-    checkBottleHitEndboss() {
-        this.throwableBottles.forEach(bottle => {
-            if (bottle.isColliding(this.endboss) && !this.endboss.hit) {
-                this.endboss.endbossHit();
-                bottle.bottleHit = true;
-            }
-        });
-    }
-
-    /**
-     * if there are throwed bottles in the array, the function iterates through it, then 
-     * itterates through the array with the enemies. Checkes if a bottle is colliding with 
-     * an enemy and triggers the kill enemy function
-     */
-    checkBottleHitsEnemies() {
-        if (this.throwableBottles) {
-            this.throwableBottles.forEach(bottle => {
-                this.level.enemies.forEach(enemy => {
-                    if (bottle.isColliding(enemy) && !enemy.isHit) {
-                        this.killEnemy(enemy);
-                    }
-                });
-            });
-        }
-    }
-
-    /**
-     * checkes if d is pressed and not hold down and if bottles are available to throw.
-     * If true set the key-pressed varible tue true and pushes a new bottle in the throwablebottle array.
-     * Then updates the bottlebar, the available bottles and the time of characters last move.
-     * If the first check was false, it checkes if the d key ist still pressed. If false, resets d pressed variable.
-     */
-    checkThrowableBottles() {
-        if (this.keyboard.D && !this.keyboardPressed && this.bottlebar.bottles > 0) {
-            this.keyboardPressed = true;
-            this.throwableBottles.push(new Throwablebottle(this.character.x + 50, this.character.y + 100, this));
-            this.bottlebar.removeBottle();
-            this.bottlebar.updateBottlebar();
-            this.updateCharactersLastMove();
-        } else if (!this.keyboard.D) {
-            this.keyboardPressed = false
-        }
-    }
-
-    /**
-     * updates the time from the characters last move 
-     */
-    updateCharactersLastMove() {
-        this.character.lastMove = new Date().getTime();
-    }
-
-
-    /**
      * Checks if the object needs to be drawn flipped. Draws a single object to the canvas.
-     * Restore the flipped mehod if drawn image was flipped
+     * Restore the flipped mehod if drawn image was flipped.
      * @param {Object} object 
      */
     drawToCanvas(object) {
@@ -160,14 +231,14 @@ class World {
             this.flipImage(object);
         };
         object.draw(this.ctx);
-        // object.drawRectangles(this.ctx);
+        // object.drawRectangles(this.ctx); For develloper purpose only
         if (object.imageMirrored) {
             this.restoreImage(object);
         }
     }
 
     /**
-     * Iterates through an array with objects and runs drwaToCanvas function
+     * Iterates through an array with objects and runs drwaToCanvas function.
      * @param {Array} array 
      */
     drawToCanvasFromArray(array) {
@@ -188,7 +259,7 @@ class World {
     }
 
     /**
-     * Restores the saved canvas configuration
+     * Restores the saved canvas configuration.
      * @param {Object} object 
      */
     restoreImage(object) {
@@ -196,57 +267,23 @@ class World {
         object.x = object.x * -1;
     }
 
+    //Templates/Returns
+
     /**
      * 
+     * @param {Object} enemy 
+     * @returns true if character is not jumping and got hit by enemy.
      */
-    checkEnemies() {
-        this.level.enemies.forEach(enemy => {
-            if (this.character.isColliding(enemy) && this.character.speedY > -0.1 && enemy.isAlive && !this.character.isHit) {
-                this.character.hit();
-            } else if (this.character.isColliding(enemy) && this.character.speedY < 0 && !enemy.isHit) {
-                this.killEnemy(enemy);
-                this.character.jump();
-            }
-        });
+    characterHitByEnemy(enemy) {
+        return this.character.isColliding(enemy) && this.character.speedY > -0.1 && enemy.isAlive && !this.character.isHit
     }
 
-    killEnemy(enemy) {
-        enemy.isHit = true;
-        enemy.isAlive = false;
-        enemy.img = enemy.imageDead;
-        setTimeout(this.removeDeadEnemies, 2000, this)
-    }
-
-    removeDeadEnemies(world) {
-        if (world.level.enemies) {
-            world.level.enemies = world.level.enemies.filter((e) => e.isAlive)
-        }
-    }
-
-    checkCoins() {
-        this.level.coins.forEach(coin => {
-            if (this.character.isColliding(coin)) {
-                let coinPosition = this.level.coins.indexOf(coin);
-                this.level.coins.splice(coinPosition, 1)
-                this.coinbar.updateCoins();
-                this.coin_sound.play();
-            }
-        });
-    }
-
-    checkBottles() {
-        this.level.bottles.forEach(bottle => {
-            if (this.character.isColliding(bottle)) {
-                let bottlePosition = this.level.bottles.indexOf(bottle);
-                this.level.bottles.splice(bottlePosition, 1);
-                this.bottlebar.updateBottles();
-            }
-        });
-    }
-
-    checkEndboss() {
-        if (this.character.isColliding(this.endboss)) {
-            this.character.hit();
-        }
+    /**
+     * 
+     * @param {Object} enemy 
+     * @returns true if character is jumping on an enemy.
+     */
+    characterJumpOnEnemy(enemy) {
+        return this.character.isColliding(enemy) && this.character.speedY < 0 && !enemy.isHit
     }
 }

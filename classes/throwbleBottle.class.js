@@ -29,7 +29,7 @@ class Throwablebottle extends Moveableobject {
         right: 20,
         left: 20,
     }
-    
+
 
     constructor(x, y, world) {
         super();
@@ -43,51 +43,93 @@ class Throwablebottle extends Moveableobject {
         this.shatter_sound.volume = 0.4;
     }
 
+    /**
+     * Shows bottle throw animation if bottle above ground and not hit an enemy yet.
+     * if bottle did hit an enemy or ground, it shows splash animation, plays sound.
+     * After animation is played, it stopes intervall and removes the bottle.
+     */
     animate() {
         let timeoutSet = false;
-
         let interval = setInterval(() => {
-            if (this.isAboveGround() && !this.bottleHit) {
+            if (this.bottleIsInFlight()) {
                 this.playAnimation(this.IMAGES_BOTTLEANIMATION);
             } else {
                 if (!timeoutSet) {
                     timeoutSet = true;
-                    
-                    
-
-                    setTimeout(() => {
-                        clearInterval(interval);
-                        let index = world.throwableBottles.indexOf(this); 
-                        world.throwableBottles.splice(index, 1);
-                    }, 400);
+                    this.stopBottleIntervall(interval);
                 }
-
                 this.playAnimation(this.IMAGES_BOTTLESPLASH);
                 this.shatter_sound.play();
             }
         }, 100);
     }
 
-    throw(x,y) {
+    /**
+     * Checks in which direction the bottle needs to be throwed and thows the bottle.
+     * @param {Variable} x 
+     * @param {Variable} y 
+     */
+    throw(x, y) {
         if (!world.character.facingLeft) {
-            this.x = x;
-            this.y = y;
-            this.speedY = 20;
-                setInterval(() => {
-                    if (this.y < 350 && !this.bottleHit) {
-                        this.x += this.speedX;
-                    } 
-                }, 1000/60);
+            this.throwBottleLeft(x, y);
         } else {
-            this.x = x -40;
-            this.y = y;
-            this.speedY = 20;
-                setInterval(() => {
-                    if (this.y < 350 && !this.bottleHit) {
-                        this.x -= this.speedX;
-                    } 
-                }, 1000/60);
+            this.throwBottleRight(x, y);
         }
-        
+
+    }
+
+    //Template/Returns
+
+    /**
+     * 
+     * @returns true if the bottle is in flight.
+     */
+    bottleIsInFlight() {
+        return this.isAboveGround() && !this.bottleHit
+    }
+
+    /**
+     *  Throws bottle to the left in relation to the character.
+     * @param {Variable} x 
+     * @param {Variable} y 
+     */
+    throwBottleLeft(x, y) {
+        this.x = x;
+        this.y = y;
+        this.speedY = 20;
+        setInterval(() => {
+            if (this.y < 350 && !this.bottleHit) {
+                this.x += this.speedX;
+            }
+        }, 1000 / 60);
+    }
+
+    /**
+     * Throws bottle to the right in relation to the character.
+     * @param {Variable} x 
+     * @param {Variable} y 
+     */
+    throwBottleRight(x, y) {
+        this.x = x - 40;
+        this.y = y;
+        this.speedY = 20;
+        setInterval(() => {
+            if (this.y < 350 && !this.bottleHit) {
+                this.x -= this.speedX;
+            }
+        }, 1000 / 60);
+    }
+
+    /**
+     * 
+     * @param {Variable} interval interval id
+     * @returns timeout to stop intervall and delete the throwed bottle.
+     */
+    stopBottleIntervall(interval) {
+        return setTimeout(() => {
+            clearInterval(interval);
+            let index = world.throwableBottles.indexOf(this);
+            world.throwableBottles.splice(index, 1);
+        }, 400);
     }
 }
