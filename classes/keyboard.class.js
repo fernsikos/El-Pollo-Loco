@@ -6,6 +6,7 @@ class Keyboard {
     SPACE;
     D;
     PRESSED;
+    TOUCHED;
 
     constructor() {
         this.keyboardEvents();
@@ -48,12 +49,18 @@ class Keyboard {
 
         document.getElementById('btn-bottle').addEventListener('touchstart', (e) => {
             e.preventDefault();
+            if (!this.TOUCHED)
             this.D = true;
+            this.TOUCHED = true;
+            setTimeout(() => {
+                this.D = false;
+            }, 100);
         });
 
         document.getElementById('btn-bottle').addEventListener('touchend', (e) => {
             e.preventDefault();
             this.D = false;
+            this.TOUCHED = false;
         });
     }
 
