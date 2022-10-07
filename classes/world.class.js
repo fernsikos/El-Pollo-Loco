@@ -9,7 +9,7 @@ class World {
     level = level1;
     throwableBottles = [];
     keyboard = new Keyboard();
-    camera_x;
+    camera_x = 0;
     gameOver = false;
     coin_sound = new Audio('audio/bling.mov');
     bottle_sound = new Audio('audio/bottle-open.mp3')
@@ -213,7 +213,7 @@ class World {
         this.drawToCanvasFromArray(this.level.clouds);
         this.drawToCanvasFromArray(this.level.bottles);
         this.drawToCanvasFromArray(this.level.coins);
-        this.drawCharacterToCanvas(this.character);
+        this.drawToCanvas(this.character);
         this.drawToCanvasFromArray(this.level.enemies);
         this.drawToCanvas(this.endboss);
         this.drawToCanvasFromArray(this.throwableBottles);
@@ -248,20 +248,18 @@ class World {
         }
     }
 
-    drawCharacterToCanvas(object) {
-        if (object.imageMirrored) {
-            this.flipImage(object);
-        };
-        object.draw(this.ctx);
-        // object.drawRectangles(this.ctx); For develloper purpose only
-        if (object.imageMirrored) {
-            this.restoreImage(object);
-        }
-    }
-
+    /**
+     * Returns true if the object needs do be drawn all the time.
+     * Returns true if other objects are at the canvas.
+     * @param {Object} object 
+     * @returns 
+     */
     isOnCanvas(object) {
-        return !this instanceof Character && object.x + object.width + this.camera_x > 0 &&
-        object.x + this.camera_x < 720
+        // let camera_x_positive = Math.abs(this.camera_x);
+        if (object instanceof Character || object instanceof Statusbar || object instanceof Bottlebar || object instanceof Coinbar) {
+            return true
+        } else return object.x + object.width + this.camera_x > 0 &&
+        object.x + this.camera_x < 722
     }
 
     /**
