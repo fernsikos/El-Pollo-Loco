@@ -256,7 +256,7 @@ class World {
      */
     isOnCanvas(object) {
         // let camera_x_positive = Math.abs(this.camera_x);
-        if (object instanceof Character || object instanceof Statusbar || object instanceof Bottlebar || object instanceof Coinbar) {
+        if (this.isAlwaysInCanvas(object)) {
             return true
         } else return object.x + object.width + this.camera_x > 0 &&
         object.x + this.camera_x < 722
@@ -310,5 +310,13 @@ class World {
      */
     characterJumpOnEnemy(enemy) {
         return this.character.isColliding(enemy) && this.character.speedY < 0 && !enemy.isHit
+    }
+
+    /**
+     * 
+     * @returns true for instances that are always on canvas
+     */
+    isAlwaysInCanvas(object) {
+        return object instanceof Character || object instanceof Statusbar || object instanceof Bottlebar || object instanceof Coinbar
     }
 }

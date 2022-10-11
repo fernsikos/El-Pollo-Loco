@@ -65,9 +65,17 @@ class Keyboard {
     }
 
     /**
-     * Eventlistener for keypress inputs.
+     * Eventlistener for key inputs.
      */
     keyboardEvents() {
+        this.bindKeyDown();
+        this.bindKeyUp();
+    }
+
+    /**
+     * Eventlistener for key down events.
+     */
+    bindKeyDown() {
         window.addEventListener('keydown', (event) => {
             if (event.keyCode == 37) {
                 this.LEFT = true;
@@ -96,10 +104,12 @@ class Keyboard {
                 }, 100);
             }
         });
+    }
 
-        /**
-         * Eventlistener for keyup inputs.
-         */
+     /**
+     * Eventlistener for key up events.
+     */
+    bindKeyUp() {
         window.addEventListener('keyup', (event) => {
             if (event.keyCode == 37) {
                 this.LEFT = false;

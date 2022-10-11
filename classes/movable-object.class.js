@@ -88,9 +88,43 @@ class Moveableobject extends DrawableObject {
      * @returns true if an object is colliding with this object. 
      */
     isColliding(mo) {
-        return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
-            this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
-            this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
+        return this.isCollidingHorizontal(mo) &&
+            this.isCollidingVertical(mo)
+    }
+
+    /**
+     * 
+     * @param {Object} mo 
+     * @returns True if colliding horizontally.
+     */
+    isCollidingHorizontal(mo) {
+        return this.getRightPosition() > mo.x + mo.offset.left &&
+            this.getLeftPosition() < mo.x + mo.width - mo.offset.right
+    }
+
+    /**
+     * 
+     * @param {Object} mo 
+     * @returns True if colliding vertically.
+     */
+    isCollidingVertical(mo) {
+        return this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
             this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
+    }
+
+    /**
+     * 
+     * @returns objects right position.
+     */
+    getRightPosition() {
+        return this.x + this.width - this.offset.right
+    }
+
+     /**
+     * 
+     * @returns objects left position.
+     */
+    getLeftPosition() {
+        return this.x + this.offset.left
     }
 }

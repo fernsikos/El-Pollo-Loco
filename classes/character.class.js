@@ -156,20 +156,9 @@ class Character extends Moveableobject {
     animateMovements() {
         let interval = setInterval(() => {
             this.walking_sound.pause();
-            if (this.world.keyboard.SPACE && !this.isAboveGround()) {
-                this.jump();
-            }
-            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end) {
-                this.moveRight(this.walkingSpeed);
-                this.facingLeft = false;
-                if (!this.isAboveGround()) { this.walking_sound.play() };
-            };
-            if (this.world.keyboard.LEFT && this.x > this.world.level.level_start) {
-                this.imageMirrored = true;
-                this.facingLeft = true;
-                this.moveLeft(this.walkingSpeed);
-                if (!this.isAboveGround()) { this.walking_sound.play() };
-            }
+            this.letCharacterJump();
+            this.letCharacterWalkRight();
+            this.letCharacterWalkLeft();
             this.world.camera_x = 100 - this.x;
         }, 1000 / 15);
         intervalIds.push(interval);
@@ -215,6 +204,38 @@ class Character extends Moveableobject {
         if (this.energy < 1) {
             this.isAlive = false;
             this.world.gameOver = true;
+        }
+    }
+
+    /**
+     * Lets the character jump when space key pressed
+     */
+    letCharacterJump() {
+        if (this.world.keyboard.SPACE && !this.isAboveGround()) {
+            this.jump();
+        }
+    }
+
+     /**
+     * Lets the character walk right when right key pressed
+     */
+    letCharacterWalkRight() {
+        if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end) {
+            this.moveRight(this.walkingSpeed);
+            this.facingLeft = false;
+            if (!this.isAboveGround()) { this.walking_sound.play() };
+        };
+    }
+
+      /**
+     * Lets the character walk left when left key pressed
+     */
+    letCharacterWalkLeft() {
+        if (this.world.keyboard.LEFT && this.x > this.world.level.level_start) {
+            this.imageMirrored = true;
+            this.facingLeft = true;
+            this.moveLeft(this.walkingSpeed);
+            if (!this.isAboveGround()) { this.walking_sound.play() };
         }
     }
 }

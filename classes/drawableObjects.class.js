@@ -44,21 +44,41 @@ class DrawableObject {
      * @param {Object} ctx Context of canvas.
      */
     drawRectangles(ctx) {
+        this.drawImageRectangles(ctx);
+        this.drawHitRectangles(ctx);
+    }
 
-        if (this instanceof Chicken || this instanceof Character || this instanceof Bottle || this instanceof Coin || this instanceof ChickenSmall || this instanceof Endboss) {
+    /**
+     * For develloper pupose. Draws rechtangles around images
+     * @param {Object} ctx 
+     */
+    drawImageRectangles(ctx) {
+        if (this.needToDrawRectangles()) {
             ctx.beginPath();
             ctx.lineWidth = '5';
             ctx.strokeStyle = 'blue';
             ctx.rect(this.x, this.y, this.width, this.height);
             ctx.stroke();
         }
+    }
 
-        if (this instanceof Chicken || this instanceof Character || this instanceof Bottle || this instanceof Coin || this instanceof ChickenSmall || this instanceof Endboss) {
+    /**
+     * For develloper pupose. Draws smaller rectangles around images representing the hit zone
+     * @param {Object} ctx 
+     */
+    drawHitRectangles(ctx) {
+        if (this.needToDrawRectangles()) {
             ctx.beginPath();
             ctx.lineWidth = '5';
             ctx.strokeStyle = 'red';
             ctx.rect(this.x + this.offset.left, this.y + this.offset.top, this.width - this.offset.right - this.offset.left, this.height - this.offset.top - this.offset.bottom);
             ctx.stroke();
         }
+    }
+
+    // Templates/ Returns
+
+    needToDrawRectangles() {
+        return this instanceof Chicken || this instanceof Character || this instanceof Bottle || this instanceof Coin || this instanceof ChickenSmall || this instanceof Endboss
     }
 }

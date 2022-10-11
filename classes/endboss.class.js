@@ -36,6 +36,7 @@ class Endboss extends Moveableobject {
     energy = 100;
     world;
     hit = false;
+    speed = 5;
     characterAriivedAtEndboss = false;
     endboss_sound = new Audio('audio/chicken1.wav');
     offset = {
@@ -73,11 +74,11 @@ class Endboss extends Moveableobject {
                 this.isAlive = false;
             } else if (this.hit) {
                 this.playAnimation(this.IMAGES_HIT)
-            } else if (i < 30) {
+            } else if (i < 20) {
                 this.playAnimation(this.IMAGES_ALERT);
             } else {
                 this.playAnimation(this.IMAGES_WALKING);
-                this.moveLeft(5)
+                this.moveLeft(this.speed)
             }
         }, 200);
         intervalIds.push(interval);
@@ -87,7 +88,7 @@ class Endboss extends Moveableobject {
      * Checkes if character arrived at endboss with comparing their x values
      */
     checkIfCharacterAtEndboss() {
-        if (world.character.x > world.endboss.x - 400) {
+        if (!this.characterAriivedAtEndboss && world.character.x > world.endboss.x - 400) {
             this.characterAriivedAtEndboss = true;
         }
     }
@@ -100,6 +101,7 @@ class Endboss extends Moveableobject {
         this.hit = true;
         this.resetHitVariable();
         this.energy -= 20;
+        this.speed += 3;
         this.checkIfEndbossDead();
     }
 
