@@ -12,7 +12,10 @@ class World {
     camera_x = 0;
     gameOver = false;
     coin_sound = new Audio('audio/bling.mov');
-    bottle_sound = new Audio('audio/bottle-open.mp3')
+    bottle_sound = new Audio('audio/bottle-open.mp3');
+    backgroundmusic_sound = new Audio('audio/177304__lenguaverde__jarabe-tapatio-mariachi.mov');
+    shatter_sound = new Audio('audio/glas-shatter.mp3');
+    soundOn = true;
 
     constructor(canvas) {
         this.ctx = canvas.getContext('2d');
@@ -23,6 +26,53 @@ class World {
         this.runInterval();
         this.coin_sound.volume = 0.3;
         this.bottle_sound.volume = 0.5;
+        this.backgroundmusic_sound.volume = 0.1;
+        this.shatter_sound.volume = 0.4;
+    }
+
+    /**
+     * toggles sound on off
+     */
+    muteSound() {
+        document.getElementById('loud').classList.toggle('d-none');
+        document.getElementById('mute').classList.toggle('d-none');
+        if (this.soundOn) {
+            this.mute();
+        } else {
+            this.unmute();
+        }
+    }
+
+    /**
+     * mutes all sounds
+     */
+    mute() {
+        this.coin_sound.volume = 0;
+        this.bottle_sound.volume = 0;
+        this.backgroundmusic_sound.pause();
+        this.character.hit_sound.volume = 0;
+        this.character.walking_sound.volume = 0;
+        this.bottle_sound.volume = 0;
+        this.endboss.endboss_sound.volume = 0;
+        this.character.jumping_sound.volume = 0;
+        this.shatter_sound.volume = 0;
+        this.soundOn = false;
+    }
+
+    /**
+     * brings the sound back
+     */
+    unmute() {
+        this.coin_sound.volume = 0.3;
+        this.bottle_sound.volume = 0.5;
+        this.backgroundmusic_sound.play();
+        this.character.hit_sound.volume = 0.5;
+        this.character.walking_sound.volume = 1;
+        this.bottle_sound.volume = 1;
+        this.endboss.endboss_sound.volume = 1;
+        this.character.jumping_sound.volume = 0.4;
+        this.shatter_sound.volume = 0.4;
+        this.soundOn = true;
     }
 
     /**
@@ -35,6 +85,7 @@ class World {
             this.checkForGameOver();
         }, 100);
         intervalIds.push(interval);
+        this.backgroundmusic_sound.play();
     }
 
     /**
@@ -44,12 +95,13 @@ class World {
     checkForGameOver() {
         if (this.gameOver) {
             this.clearIntervals()
-            if(this.character.isAlive) {
+            if (this.character.isAlive) {
                 document.getElementById('outro-screen-game-over').classList.remove('d-none')
             } else {
                 document.getElementById('outro-screen-you-lost').classList.remove('d-none')
             }
             this.character.walking_sound.pause();
+            this.backgroundmusic_sound.pause();
         }
     }
 
@@ -115,6 +167,7 @@ class World {
             } else if (this.characterJumpOnEnemy(enemy)) {
                 this.killEnemy(enemy);
                 this.character.jump();
+                this.character.jumping_sound.play();
             }
         });
     }
@@ -259,7 +312,7 @@ class World {
         if (this.isAlwaysInCanvas(object)) {
             return true
         } else return object.x + object.width + this.camera_x > 0 &&
-        object.x + this.camera_x < 722
+            object.x + this.camera_x < 722
     }
 
     /**

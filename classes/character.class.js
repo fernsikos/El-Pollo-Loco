@@ -70,7 +70,8 @@ class Character extends Moveableobject {
     walkingSpeed = 20;
     facingLeft = false;
     walking_sound = new Audio('audio/walking_modified.mp3');
-    hit_sound = new Audio('audio/ouch.mov')
+    hit_sound = new Audio('audio/ouch.mov');
+    jumping_sound = new Audio('audio/jump.mp3');
     offset = {
         top: 120,
         bottom: 15,
@@ -91,6 +92,7 @@ class Character extends Moveableobject {
         this.loadImagesToCache(this.IMAGES_DEAD);
         this.loadImagesToCache(this.IMAGES_HURT);
         this.hit_sound.volume = 0.3;
+        this.jumping_sound.volume = 0.4;
         this.animate();
         this.applyGravity();
     }
@@ -213,6 +215,7 @@ class Character extends Moveableobject {
     letCharacterJump() {
         if (this.world.keyboard.SPACE && !this.isAboveGround()) {
             this.jump();
+            this.jumping_sound.play()
         }
     }
 

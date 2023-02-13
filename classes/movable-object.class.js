@@ -5,14 +5,12 @@ class Moveableobject extends DrawableObject {
     speedY = 0;
     acceleration = 1.2;
     lastMove = new Date().getTime();
-    lastHit = 0; //weg?
+    lastHit = 0; 
     isAlive = true;
     isHit = false;
-    jumping_sound = new Audio('audio/jump.mp3');
 
     constructor() {
         super();
-        this.jumping_sound.volume = 0.4;
     }
 
     /**
@@ -74,11 +72,9 @@ class Moveableobject extends DrawableObject {
 
     /**
      * Let an object jump by changing its speed y variable.
-     * Playes jumping sound
      */
     jump() {
         this.speedY = 15;
-        this.jumping_sound.play();
         this.lastMove = new Date().getTime();
     }
 

@@ -22,7 +22,6 @@ class Throwablebottle extends Moveableobject {
     speedX = 3;
     world;
     bottleHit = false;
-    shatter_sound = new Audio('audio/glas-shatter.mp3');
     offset = {
         top: 10,
         bottom: 10,
@@ -40,7 +39,6 @@ class Throwablebottle extends Moveableobject {
         this.world = world;
         this.throw(x, y);
         this.animate();
-        this.shatter_sound.volume = 0.4;
     }
 
     /**
@@ -59,7 +57,7 @@ class Throwablebottle extends Moveableobject {
                     this.stopBottleIntervall(interval);
                 }
                 this.playAnimation(this.IMAGES_BOTTLESPLASH);
-                this.shatter_sound.play();
+                this.world.shatter_sound.play();
             }
         }, 100);
     }

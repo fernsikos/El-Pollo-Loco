@@ -37,7 +37,16 @@ function toggleGamepad() {
     document.getElementById('mobile-gamepad').classList.toggle('opacity-zero');
 }
 
+/**
+ * Toggles help section on and off
+ */
 function toggleHelpSection() {
     document.getElementById('help-section-container').classList.toggle('opacity-zero');
 }
 
+/**
+ * Toggles fullscreen
+ */
+function toggleFullScreen() {
+    document.getElementById('canvas').requestFullscreen();
+}
