@@ -266,6 +266,25 @@ canvas {
         height: 40px;
         width: 40px;
     }
+
+    #mobile-gamepad {
+        left: -120px !important;
+        right: -120px !important;
+        
+    }
+}
+
+@media (min-width:950px) {
+    #mobile-gamepad {
+        left: -90px;
+        right: -90px;
+        width: unset !important;
+        margin-bottom: 0;
+    }
+
+    .mobile-container-right, .mobile-container-left {
+        border-radius: 40px;
+    }
 }
 
 

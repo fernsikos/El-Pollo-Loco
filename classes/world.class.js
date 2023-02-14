@@ -28,6 +28,10 @@ class World {
         this.bottle_sound.volume = 0.5;
         this.backgroundmusic_sound.volume = 0.1;
         this.shatter_sound.volume = 0.4;
+        if (this.soundOn) {
+            document.getElementById('loud').classList.add('d-none');
+            document.getElementById('mute').classList.remove('d-none');
+        }
     }
 
     /**
@@ -85,7 +89,9 @@ class World {
             this.checkForGameOver();
         }, 100);
         intervalIds.push(interval);
-        this.backgroundmusic_sound.play();
+        if (this.soundOn) {
+            this.backgroundmusic_sound.play();
+        }
     }
 
     /**
